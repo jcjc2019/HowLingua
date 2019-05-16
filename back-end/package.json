@@ -9,7 +9,10 @@
   "author": "Jing",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "express": "^4.16.4",
+    "jsonwebtoken": "^8.5.1",
+    "nodemon": "^1.19.0",
     "pryjs": "^1.0.3",
     "sequelize": "^5.8.6"
   }
