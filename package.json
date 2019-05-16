@@ -1,0 +1,19 @@
+{
+  "name": "howlingua",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jcjc2019/HowLingua.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jcjc2019/HowLingua/issues"
+  },
+  "homepage": "https://github.com/jcjc2019/HowLingua#readme"
+}

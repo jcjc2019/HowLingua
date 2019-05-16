@@ -1,0 +1,16 @@
+{
+  "name": "back-end",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jing",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "pryjs": "^1.0.3",
+    "sequelize": "^5.8.6"
+  }
+}
