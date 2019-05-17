@@ -196,7 +196,7 @@ app.get("/languages/:id", (req, res) => {
 });
 
 app.post("/languages", (req, res) => {
-    //create new script
+    //create new language instance
     let newLanguage = Language.build();
     //set up properties
     newLanguage.name = req.body.name;

@@ -449,6 +449,12 @@ const questions = [
         quizId: 1
     },
     {
+        question: "你好",
+        answer: "Nǐ hǎo",
+        type: "How to pronounce this word?",
+        quizId: 1
+    },
+    {
         question: "A. 你 \nB. 好\nC. 你好\n",
         answer: "C. 你好",
         type: "Suppose you meet a friend named Li Hao for the first time, what to say?",

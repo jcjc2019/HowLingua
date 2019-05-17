@@ -16,3 +16,4 @@
   
 2. user settings
    - You have been learning a new language for `user.createdat` days.
+3. `Learn a Character` function: add a dictionary function by using `Hanzi.js` library for user to check a character
