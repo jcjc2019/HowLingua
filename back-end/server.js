@@ -207,7 +207,8 @@ app.post("/languages", (req, res) => {
         .save()
         //link language to specific user
         .then(savedLanguage => {
-            User.findByPk(req.body.userid).then(user => {
+            //find user by the userid stored in localStorage
+            User.findByPk(localStorage.userid).then(user => {
                 user.addLanguage(savedLanguage, { through: { role: "learner" } });
             });
             console.log(savedLanguage);
@@ -242,7 +243,7 @@ app.post("/topics", (req, res) => {
         .save()
         //link Topic to specific user
         .then(savedTopic => {
-            User.findByPk(req.body.userid).then(user => {
+            User.findByPk(localStorage.userid).then(user => {
                 user.addTopic(savedTopic, { through: { role: "learner" } });
             });
             io.emit("TopicAdded", savedTopic);
