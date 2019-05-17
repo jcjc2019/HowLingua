@@ -25,7 +25,7 @@ class User extends Model {
     }
     //get method for jwt token
     get token() {
-        return jwt.sign({ id: this.id }, "constant_comment");
+        return jwt.sign({ id: this.id }, "ni_hao_zai_jian");
     }
     toJSON() {
         let jsonObject = { ...this.dataValues, token: this.token };
@@ -41,7 +41,8 @@ User.init(
             allowNull: false
         },
         email: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            allowNull:false
         },
         password_digest: {
             type: Sequelize.STRING
@@ -55,6 +56,9 @@ User.init(
         points: {
             type: Sequelize.INTEGER
         },
+        avatar: {
+            type: Sequelize.INTEGER
+        }
     },
     {
         sequelize,

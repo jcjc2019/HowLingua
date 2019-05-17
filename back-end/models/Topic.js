@@ -3,6 +3,8 @@
 //use sequelize package
 const Sequelize = require('sequelize');
 
+const Quiz = require("./Quiz");
+
 //use sqlite database
 const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -18,7 +20,11 @@ Topic.init({
         type: Sequelize.STRING,
         allowNull: false
     },
-    description: {
+    name: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    content: {
         type: Sequelize.STRING,
         allowNull: false
     }
@@ -30,3 +36,6 @@ Topic.init({
 module.exports = Topic
 
 sequelize.sync()
+
+//A topic has many quizzes, add topicId to quiz table
+Topic.hasMany(Quiz, {as: 'Quizzes'})

@@ -2,8 +2,6 @@
 
 //use sequelize package
 const Sequelize = require('sequelize');
-//model for relation
-const Quiz = require("./Quiz");
 
 //use sqlite database
 const sequelize = new Sequelize({
@@ -35,6 +33,3 @@ Question.init({
 module.exports = Question
 
 sequelize.sync()
-
-//A quiz has many questions, add quizId
-Question.belongsTo(Quiz)

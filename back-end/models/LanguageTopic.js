@@ -20,7 +20,7 @@ LanguageTopic = sequelize.define('language_topic', {
 });
 
 Language.belongsToMany(Topic, {
-    through: TopicLanguage
+    through: LanguageTopic
 });
 
 Topic.belongsToMany(Language, {

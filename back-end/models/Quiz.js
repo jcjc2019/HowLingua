@@ -3,7 +3,8 @@
 //use sequelize package
 const Sequelize = require('sequelize');
 //model for relation
-const Topic = require("./Topic");
+const Language = require("./Language");
+const Question = require("./Question");
 
 //use sqlite database
 const sequelize = new Sequelize({
@@ -29,5 +30,6 @@ module.exports = Quiz
 
 sequelize.sync()
 
-//A topic has many quizzes
-Quiz.belongsTo(Topic)
+//A quiz has many questions, a quiz belongs to a specific language
+Quiz.belongsTo(Language)
+Quiz.hasMany(Question,{as: 'Questions'})
