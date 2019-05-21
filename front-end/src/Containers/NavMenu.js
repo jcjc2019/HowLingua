@@ -1,24 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
-import Grid from "@material-ui/core/Grid";
-import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { withStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
+import TypoGraphy from '@material-ui/core/Typography';
+import Toolbar from '@material-ui/core/Toolbar'
+import AppBar from '@material-ui/core/AppBar';
 
+//use list instead of menu
 const styles = theme => ({
     root: {
         display: 'flex',
     },
     paper: {
-        // marginRight: theme.spacing.unit * 2,
-        height: "100%",
-        width: "100&"
+        marginLeft: theme.spacing.unit * 2,
+        marginRight: theme.spacing.unit * 2,
+        height: "95%",
+        width: "50%"
     },
 });
 
@@ -43,10 +43,18 @@ class MenuListAll extends React.Component {
         const { open } = this.state;
 
         return (
-            <div className={classes.root}>
-                <Paper className={classes.paper}>
-                    <p>HowLingua</p>
+            <AppBar color="primary" position="static">
+                    
+                    <MenuList>
+                    <MenuItem>
+                    <Toolbar>
+                        <TypoGraphy variant="title" color="inherit">HowLingua</TypoGraphy>
+                    </Toolbar>
+                    </MenuItem>
+                    </MenuList>        
+
                     <Divider />
+                    <Paper>
                     <MenuList>
                         <MenuItem>My Languages</MenuItem>
                         <Divider />
@@ -65,8 +73,8 @@ class MenuListAll extends React.Component {
                         <Divider />
                         <MenuItem>Logout</MenuItem>
                     </MenuList>
-                </Paper>
-            </div>
+                    </Paper>
+                </AppBar>   
         );
     }
 }
