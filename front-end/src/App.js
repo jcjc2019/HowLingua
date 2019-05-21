@@ -1,12 +1,12 @@
 import React from 'react';
-import MainContainer from './Containers/MainContainer';
+import NavDrawer from './Containers/NavDrawer';
 export default class App extends React.Component {
 
   render(){
 
     return (
     <div>
-      <MainContainer />
+      <NavDrawer />
     </div>
     )
   }

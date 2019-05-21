@@ -27,6 +27,7 @@ import TrophiesIcon from "@material-ui/icons/ThumbUp";
 import logo from '../assets/logo.png';
 import darkTheme from '../themes/dark';
 import lightTheme from '../themes/light';
+import Switch from "@material-ui/core/Switch";
 
 const drawerWidth = 220;
 const theme1 = createMuiTheme(lightTheme);
@@ -212,6 +213,12 @@ class NavDrawer extends React.Component {
                             <ColorIcon />
                         </ListItemIcon>
                         <ListItemText primary= "Dark/Light Theme" />
+                        <Switch
+                            checked={!this.state.isThemeLight}
+                            onChange={this.toggleThemeClick}
+                            value="light"
+                            color="primary"
+                        />
                     </ListItem>
                 </List>
             </Drawer>
@@ -224,6 +231,7 @@ class NavDrawer extends React.Component {
                 <div className={classes.drawerHeader} />
                 <Typography variant="h6" color="inherit">
                 Here is the Component of Course Content after User finishes the survey form, after submitting Survey form on Welcome screen.
+                MainContainer here. 
                 If user is logged in, render logout on the left, add username on the left. TODO
                 If user is not logged in, render login on the left. TODO
                 </Typography>
