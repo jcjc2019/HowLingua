@@ -1,7 +1,4 @@
 import React from "react";
-import socketIO from "socket.io-client";
-import Typist from "react-typist";
-import "react-typist/dist/Typist.css";
 import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
 import { withStyles } from "@material-ui/core/styles";
@@ -54,9 +51,11 @@ class SurveyForm extends React.Component{
         })
     };
 
-    handleSubmit = ()=> {
+    handleSubmit = (e)=> {
+        e.preventDefault();
         console.log('form submitted')
     }
+
     render(){
         const {classes} = this.props;
         return (
@@ -97,6 +96,7 @@ class SurveyForm extends React.Component{
                                 name: "topic",
                                 id: "topic"
                             }}
+                            error={true}
                         >
                             <option value="" />
                             <option value={"greetings"}>greet people</option>
@@ -117,7 +117,7 @@ class SurveyForm extends React.Component{
                                 id: "targetLanguage"
                             }}
                         >
-                            <option value="" />
+                            <option value="" >Select a foreign language</option>
                             <option value={"Mandarin"}>Chinese-Mandarin</option>
                             <option value={"Japanese"}>Japanese</option>
                             <option value={"Cantonese"}>Chinese-Cantonese(currently unavailbale)</option>
@@ -130,7 +130,7 @@ class SurveyForm extends React.Component{
                         <FormHelperText>Select the language you want to learn</FormHelperText>
                     </FormControl>
                     <Button type="submit" color="primary" variant="contained" size="medium">
-                        <Typography variant="h5" color="inherit">Start my journey now...</Typography>
+                        <Typography variant="h5" color="inherit">Start my journey now!</Typography>
                     </Button>
                 </FormGroup> 
             </form>  
