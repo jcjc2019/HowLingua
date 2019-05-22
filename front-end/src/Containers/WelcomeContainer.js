@@ -38,18 +38,17 @@ class WelcomeContainer extends React.Component{
                     justify="center"
                     alignItems="center">
                     <Grid item xs>
-                            <img src={logo} alt="Logo" style={{ width: 200, height: 200}}></img>
+                        <img src={logo} alt="Logo" style={{ width: 200, height: 200}}></img>
                             <Typography variant="subheading">A Learner-Centered App for</Typography>
                             <Typography variant="subheading">Learning Foreign Languages</Typography>
-                            <SurveyForm />
+                        <SurveyForm />
                     </Grid>
                 </Grid>
             </Paper>
-            </div>
+        </div>
         )
     }
 }
-
 
 WelcomeContainer.propTypes = {
     classes: PropTypes.object.isRequired

@@ -20,6 +20,7 @@ import LanguageIcon from "@material-ui/icons/Language";
 import TopicIcon from "@material-ui/icons/Class";
 import AboutIcon from "@material-ui/icons/Info";
 import SettingsIcon from "@material-ui/icons/Settings";
+import SignupIcon from "@material-ui/icons/AccountBox";
 import LogoutIcon from "@material-ui/icons/ExitToApp";
 import LeaderboardIcon from "@material-ui/icons/Assessment";
 import ColorIcon from "@material-ui/icons/ColorLens"
@@ -28,6 +29,9 @@ import logo from '../assets/logo.png';
 import darkTheme from '../themes/dark';
 import lightTheme from '../themes/light';
 import Switch from "@material-ui/core/Switch";
+import MainContainer from "./MainContainer";
+import { withRouter } from 'react-router-dom';
+
 
 const drawerWidth = 220;
 const theme1 = createMuiTheme(lightTheme);
@@ -111,6 +115,11 @@ class NavDrawer extends React.Component {
         })
     }
 
+    handleLogout = ()=> {
+        localStorage.clear();
+        this.props.history.push('/')
+    }
+    
     render (){
         const { classes, theme } = this.props;
         const { open } = this.state;
@@ -191,14 +200,18 @@ class NavDrawer extends React.Component {
                 </List>
                 <Divider />
                 <List>
-                    {["Settings", "Logout"].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <SettingsIcon /> : <LogoutIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
+                    <ListItem button key="Account">
+                        <ListItemIcon>
+                            {localStorage.getItem("userid") !== null ? <SettingsIcon /> : <SignupIcon />}
+                        </ListItemIcon>
+                    <ListItemText primary={localStorage.getItem("userid") !== null ? "Settings" : "Signup for an account"} />
+                    </ListItem>
+                    <ListItem button key = "Exit" onClick = {this.handleLogout}>
+                        <ListItemIcon>
+                            <LogoutIcon />
+                        </ListItemIcon>
+                    <ListItemText primary={localStorage.getItem("userid") !== null ? "Logout" : "Exit"} />
+                    </ListItem>
                 </List>
                 <Divider />
                 <List>
@@ -229,12 +242,11 @@ class NavDrawer extends React.Component {
                 })}
             >
                 <div className={classes.drawerHeader} />
-                <Typography variant="h6" color="inherit">
-                Here is the Component of Course Content after User finishes the survey form, after submitting Survey form on Welcome screen.
-                MainContainer here. 
-                If user is logged in, render logout on the left, add username on the left. TODO
-                If user is not logged in, render login on the left. TODO
-                </Typography>
+                    <MainContainer />
+                    <Typography variant="h6">
+                    If user is logged in, render logout on the left, add username on the left. TODO
+                    If user is not logged in, render login on the left. TODO
+                    </Typography>
             </main>
         </div>
         </MuiThemeProvider>
@@ -249,4 +261,4 @@ NavDrawer.propTypes = {
     theme: PropTypes.object.isRequired,
 }
 
-export default withStyles(styles, {withTheme: true }) (NavDrawer);
+export default  withRouter(withStyles(styles, {withTheme: true }) (NavDrawer));

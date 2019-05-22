@@ -8,15 +8,15 @@ export default class App extends React.Component {
 
   render(){
 
+
     return (
     <div>
       <BrowserRouter>
         <Switch>
-          <Route exact path="/" component={WelcomeContainer} />
-          <Route exact path="/main" component={NavDrawer} />
+          <Route exact path="/" render={() => localStorage.length === 0 ? <WelcomeContainer/> : <NavDrawer />} />
+          <Route exact path="/main" render={() => localStorage.length === 0 ? <WelcomeContainer /> : <NavDrawer />} />
           <Route exact path="/login" component={LoginForm} />
           <Route exact path="/signup" component={SignupForm} />
-
         </Switch>
       </BrowserRouter>
     </div>

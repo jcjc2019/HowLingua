@@ -10,7 +10,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import NativeSelect from "@material-ui/core/NativeSelect";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-
+import { withRouter } from 'react-router-dom';
 
 const styles = theme => ({
     root: {
@@ -46,14 +46,24 @@ class SurveyForm extends React.Component{
     }
 
     handleChange = name => event => {
-        this.setState({
-            [name]: event.target.value
-        })
+        if (event.target.value !== ""){
+            this.setState({
+                [name]: event.target.value
+            })
+        }
     };
 
     handleSubmit = (e)=> {
         e.preventDefault();
-        console.log('form submitted')
+        localStorage.setItem('foreignLanguage', `${this.state.targetLanguage}`)
+        localStorage.setItem('topic', `${this.state.topic}`)
+        localStorage.setItem('points', 0)
+        localStorage.setItem('nativeLanguage', `${this.state.nativeLanguage}`)
+        console.log(localStorage)
+        console.log(this.state)
+        if(this.state.nativeLanguage !== "" && this.state.targetLanguage !== "" && this.state.topic !== ""){
+            this.props.history.push('/main')
+        }
     }
 
     render(){
@@ -79,6 +89,7 @@ class SurveyForm extends React.Component{
                                     id="native-language"
                                 />
                             }
+                            error={this.state.nativeLanguage === ""}
                         >
                         <option value="" />
                         <option value={"English"}>English</option>
@@ -96,7 +107,7 @@ class SurveyForm extends React.Component{
                                 name: "topic",
                                 id: "topic"
                             }}
-                            error={true}
+                            error={this.state.topic === ""}
                         >
                             <option value="" />
                             <option value={"greetings"}>greet people</option>
@@ -116,6 +127,7 @@ class SurveyForm extends React.Component{
                                 name: "targetLanguage",
                                 id: "targetLanguage"
                             }}
+                            error={this.state.targetLanguage === ""}
                         >
                             <option value="" >Select a foreign language</option>
                             <option value={"Mandarin"}>Chinese-Mandarin</option>
@@ -129,9 +141,11 @@ class SurveyForm extends React.Component{
                         </NativeSelect>
                         <FormHelperText>Select the language you want to learn</FormHelperText>
                     </FormControl>
+
                     <Button type="submit" color="primary" variant="contained" size="medium">
                         <Typography variant="h5" color="inherit">Start my journey now!</Typography>
                     </Button>
+ 
                 </FormGroup> 
             </form>  
         )
@@ -143,4 +157,4 @@ SurveyForm.propTypes = {
     classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(SurveyForm);
+export default withRouter(withStyles(styles)(SurveyForm));
