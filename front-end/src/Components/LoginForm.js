@@ -87,6 +87,10 @@ class LoginForm extends React.Component{
             //show Drawer page 
             this.props.history.push('/main')
         })
+        
+        //.then(()=> 
+        //TODO: create link between user and language, between user and topic
+        //)
     }
 
 

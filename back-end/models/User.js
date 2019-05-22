@@ -47,11 +47,11 @@ User.init(
         password_digest: {
             type: Sequelize.STRING
         },
-        currentLanguage_id: {
-            type: Sequelize.INTEGER
+        currentLanguage: {
+            type: Sequelize.STRING
         },
-        currentTopic_id: {
-            type: Sequelize.INTEGER
+        currentTopic: {
+            type: Sequelize.STRING
         },
         points: {
             type: Sequelize.INTEGER

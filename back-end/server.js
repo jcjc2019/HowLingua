@@ -14,6 +14,7 @@ const Quiz = require('./models/Quiz');
 const Question = require('./models/Question');
 
 //socket.io for user authentication and language change
+//change localhost to ip address after deployment
 //SOCKET.IO
 const io = socketIo(8080, {
     handlePreflightRequest: function (req, res) {

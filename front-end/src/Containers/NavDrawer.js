@@ -32,7 +32,7 @@ import Switch from "@material-ui/core/Switch";
 import MainContainer from "./MainContainer";
 import { withRouter } from 'react-router-dom';
 import Button from "@material-ui/core/Button";
-
+import LoginForm from "../Containers/LoginContainer"
 
 const drawerWidth = 220;
 const theme1 = createMuiTheme(lightTheme);
@@ -155,6 +155,7 @@ class NavDrawer extends React.Component {
                             marginLeft: 'auto',
                             marginRight: '10%',
                         }}
+                        onClick={() => this.props.history.push('/login')}
                         >
                         {localStorage.getItem('userid') === null ? "Sign in" : ""}
                     </Button>
@@ -218,6 +219,7 @@ class NavDrawer extends React.Component {
                         </ListItemIcon>
                     <ListItemText primary={localStorage.getItem("userid") !== null ? "Settings" : "Signup for an account"} />
                     </ListItem>
+
                     <ListItem button key = "Exit" onClick = {this.handleLogout}>
                         <ListItemIcon>
                             <LogoutIcon />
@@ -254,11 +256,16 @@ class NavDrawer extends React.Component {
                 })}
             >
                 <div className={classes.drawerHeader} />
-                    <MainContainer />
-                    <Typography variant="h6">
-                    If user is logged in, render logout on the left, add username on the left. TODO
-                    If user is not logged in, render login on the left. TODO
+                {
+                   localStorage.getItem('topic') !== "greetings" ?
+                    (<Typography variant="h6" align="center">
+                         Please sign in or create a new account to access the content.
+                     <LoginForm />
                     </Typography>
+                    )
+                   :
+                    (<MainContainer />)
+                }
             </main>
         </div>
         </MuiThemeProvider>

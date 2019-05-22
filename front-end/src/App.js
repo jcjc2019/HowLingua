@@ -14,10 +14,10 @@ export default class App extends React.Component {
       <BrowserRouter>
         <Switch>
             <Route exact path="/" render={() =>
-              localStorage.length !== 0 &&
+              (localStorage.length !== 0 &&
                 localStorage.getItem('nativeLanguage') !== "" &&
                 localStorage.getItem('topic') !== "" &&
-                localStorage.getItem('targetLanguage') !== "" ?
+                localStorage.getItem('targetLanguage') !== "") || (localStorage.getItem("userid") !== null)  ?
                 <NavDrawer /> : <WelcomeContainer /> } />
             
             <Route exact path="/main" render={() => 

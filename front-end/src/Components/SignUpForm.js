@@ -12,6 +12,8 @@ import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
 import { Divider } from "@material-ui/core";
+import { withRouter } from 'react-router-dom';
+
 
 const faker = require("faker");
 
@@ -44,13 +46,25 @@ const styles = theme => ({
     }
 });
 
+//change this after deployment
+const expressUrl = "http://localhost:3001"
+
 class SignupForm extends React.Component {
     state = {
         username: "",
         email: "",
         password: "",
+        showPassword: false,
         avatar: "",
-        showPassword: false
+        // points: localStorage.getItem('points'),
+        // TODO: a user who sign up after quiz should use the above line for points
+        points: 0,
+        currentTopic: "",
+        // currentTopic: localStorage.getItem('topic'),
+        // TODO: a user who sign up after finishing a topic should use the above line for topic
+        currentLanguage: "",
+        // currentTopic: localStorage.getItem('foreignLanguage'),
+        // TODO: a user who sign up after finishing a topic should use the above line for language
     };
 
     handleChange = name => event => {
@@ -84,7 +98,40 @@ class SignupForm extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        console.log("New user created.")
+        // let username = e.target.querySelector("#username");
+        // let password = e.target.querySelector("#password");
+        // let email = e.target.querySelector("#email");
+        this.fetchData();
+    }
+
+    fetchData = () => {
+        fetch(`${expressUrl}/users`,{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                //sending this.state
+                username: this.state.username,
+                email: this.state.email,
+                password: this.state.password,
+                avatar: this.state.avatar,
+                //remember the progress
+                points: this.state.points,
+                currentTopic: this.state.currentTopic,
+                currentLanguage: this.state.currentLanguage
+            })
+        })
+        .then(res => res.json())
+        .then(user => {
+            console.log(user);
+            localStorage.setItem("userid", user.id);
+            localStorage.setItem("username", user.username);
+            localStorage.setItem("token", user.token);
+            console.log(localStorage);
+            //show Drawer page 
+            this.props.history.push('/main')
+        })
     }
     render() {
         const { classes } = this.props;
@@ -199,4 +246,4 @@ SignupForm.propTypes = {
     classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(SignupForm);
+export default withRouter(withStyles(styles)(SignupForm));
