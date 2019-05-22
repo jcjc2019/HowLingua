@@ -27,7 +27,9 @@ const styles = theme => ({
     textField: {
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
-        flexBasis: 200
+        flexBasis: 200,
+        display: "flex",
+        flexWrap: "wrap"
     },
     button: {
         marginLeft: theme.spacing.unit,
@@ -115,13 +117,11 @@ class SignupForm extends React.Component {
                 <Button
                     color="primary"
                     variant="outlined"
-                    margin="normal"
+                    margin="auto"
                     onClick={this.generateRandomUsername}
                     className={classes.button}
                 >
-                    <Typography variant="button" color="inherit">
-                        Get a random username
-                    </Typography>
+                    Get a random username
                 </Button>
                 <p />
                 <Divider variant="middle" />
@@ -158,9 +158,7 @@ class SignupForm extends React.Component {
                     onClick={this.generateRandomPassword}
                     className={classes.button}
                 >
-                    <Typography variant="button" color="inherit">
-                        Get a random password
-          </Typography>
+                   Get a random password
                 </Button>
                 <p />
                 <Divider variant="middle" />
@@ -172,9 +170,7 @@ class SignupForm extends React.Component {
                     onClick={this.generateRandomAvatar}
                     className={classes.button}
                 >
-                <Typography variant="button" color="inherit">
-                        Get a random avatar picture
-                </Typography>
+                    Get a random avatar picture
                 </Button>
                 <Grid container>
                     <Avatar src={this.state.avatar} className={classes.bigAvatar} />

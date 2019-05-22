@@ -11,6 +11,9 @@ import NativeSelect from "@material-ui/core/NativeSelect";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { withRouter } from 'react-router-dom';
+import Divider from "@material-ui/core/Divider";
+import Grid from "@material-ui/core/Grid";
+
 
 const styles = theme => ({
     root: {
@@ -145,6 +148,16 @@ class SurveyForm extends React.Component{
                     <Button type="submit" color="primary" variant="contained" size="medium">
                         <Typography variant="h5" color="inherit">Start my journey now!</Typography>
                     </Button>
+                    <p></p>
+                    <Divider/>
+                    <p></p>
+                    <Grid item>
+                    <Typography variant="subheading" color="inherit" align="left">Already have an account?   
+                        <Button color="secondary" variant="contained" size="medium" onClick={() => this.props.history.push('/login')} style={{marginLeft:"5%"}}s>
+                        <Typography variant="subheading" color="inherit">Login</Typography>
+                        </Button>
+                    </Typography>
+                    </Grid>
  
                 </FormGroup> 
             </form>  

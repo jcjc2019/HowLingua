@@ -31,6 +31,7 @@ import lightTheme from '../themes/light';
 import Switch from "@material-ui/core/Switch";
 import MainContainer from "./MainContainer";
 import { withRouter } from 'react-router-dom';
+import Button from "@material-ui/core/Button";
 
 
 const drawerWidth = 220;
@@ -45,7 +46,7 @@ const styles = theme => ({
         transition: theme.transitions.create(["margin", "width"], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen
-        })
+        }),
     },
     appBarShift: {
         width: `calc(100% - ${drawerWidth}px)`,
@@ -147,8 +148,19 @@ class NavDrawer extends React.Component {
                     <Typography variant="h6" color="inherit" noWrap>
                         HowLingua: A Learner-Centered App for Learning Foreign Languages
                     </Typography>
+                    
+                    <Button 
+                        color="inherit" 
+                        style={{
+                            marginLeft: 'auto',
+                            marginRight: '10%',
+                        }}
+                        >
+                        {localStorage.getItem('userid') === null ? "Sign in" : ""}
+                    </Button>
                 </Toolbar>
             </AppBar>
+
             <Drawer
                 className={classes.drawer}
                 variant="persistent"
@@ -175,7 +187,7 @@ class NavDrawer extends React.Component {
                 <List>
                     <Typography variant="h6" align="center">Welcome, 
                     </Typography>
-                    <Typography variant="h6" align="center">Learner !
+                        <Typography variant="h6" align="center">{localStorage.getItem('userid') === null ? "Learner" : `${localStorage.getItem('username')}`}!
                     </Typography>
                     <Divider/>    
                     {["Languages", "Topics"].map((text, index) => (

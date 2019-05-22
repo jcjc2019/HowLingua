@@ -37,12 +37,29 @@ const createFakeUser = ()=>(
   {
     username: faker.internet.userName(),
     email: faker.internet.email(),
-    password: faker.internet.password(),
-    points: faker.random.number(),
+    //password: fake.internet.password(), get random password
+    //fake data, needs to get password_digest, so all users share 'password' as password
+    password: 'password',
+    password_digest: bcrypt.hashSync('password', bcrypt.genSaltSync(10)),
+    points: faker.random.number({
+        min: 0,
+        max: 200000
+    }),
     avatar: faker.random.image(),
   });
 
-const fakeUsers = [];
+const bcrypt = require("bcrypt");
+
+const fakeUsers = [
+    {
+        username: 'jing',
+        email: 'jingchenjc2019@gmail.com',
+        password: 'password',
+        password_digest: bcrypt.hashSync('password', bcrypt.genSaltSync(10)),
+        points: 0,
+        avatar: 'https://i.pinimg.com/originals/ed/26/24/ed2624b5b93f6537d185a76a2517ccef.png'
+    }
+];
 const numberOfUsers = 50;
 for(let i=0; i < numberOfUsers; i++){
     fakeUsers.push(createFakeUser())

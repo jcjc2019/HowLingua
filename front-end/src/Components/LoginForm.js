@@ -9,6 +9,8 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import { withRouter } from 'react-router-dom';
+
 
 const styles = theme => ({
     root: {
@@ -22,19 +24,25 @@ const styles = theme => ({
     textField: {
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
-        flexBasis: 200
+        flexBasis: 200,
+        display: "flex",
+        flexWrap: "wrap"
     },
     button: {
         margin: theme.spacing.unit,
     },
 });
 
+//change this after deployment
+const expressUrl = "http://localhost:3001"
+
+
 class LoginForm extends React.Component{
     state = {
         username: "",
         email: "",
         password: "",
-        showPassword: false
+        showPassword: false,
     }
 
     handleChange = name => event => {
@@ -50,8 +58,38 @@ class LoginForm extends React.Component{
     
     handleSubmit = e => {
         e.preventDefault()
-        console.log("user login form submitted.")
+        let username = e.target.querySelector("#username");
+        let password = e.target.querySelector("#password")
+        this.fetchData()
     }
+
+
+
+    fetchData = ()=> {
+        fetch(`${expressUrl}/login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username: this.state.username,
+                email: this.state.email,
+                password: this.state.password
+            })
+        })
+        .then(res => res.json())
+        .then(user =>{
+            //to make sessions
+            localStorage.setItem("username", user.username);
+            localStorage.setItem("userid", user.id);
+            localStorage.setItem("token", user.token);
+            console.log(localStorage);
+            //show Drawer page 
+            this.props.history.push('/main')
+        })
+    }
+
+
 
     render(){
         const { classes } = this.props;
@@ -82,7 +120,7 @@ class LoginForm extends React.Component{
                 />
                 <br></br>
                 <TextField
-                    id="outlined-adornment-password"
+                    id="password"
                     className={classNames(classes.margin, classes.textField)}
                     variant="outlined"
                     margin="normal"
@@ -108,6 +146,10 @@ class LoginForm extends React.Component{
                 <Button type="submit" color="primary" variant="contained" size="medium" className={classes.button}>
                     <Typography variant="button" color="inherit">Sign in</Typography>
                 </Button>
+
+                <Button color="secondary" variant="contained" size="medium" className={classes.button} onClick={() => this.props.history.push('/signup')}>
+                    <Typography variant="button" color="inherit">Create a new account</Typography>
+                </Button>
             </form>
         );
     }
@@ -117,4 +159,4 @@ LoginForm.propTypes = {
     classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(LoginForm);
+export default withRouter(withStyles(styles)(LoginForm));
