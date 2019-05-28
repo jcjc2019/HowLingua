@@ -7,6 +7,8 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import FormGroup from '@material-ui/core/FormGroup';
+import Select from "@material-ui/core/Select";
+import MenuItem from '@material-ui/core/MenuItem';
 import NativeSelect from "@material-ui/core/NativeSelect";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -49,6 +51,8 @@ class SurveyForm extends React.Component{
     }
 
     handleChange = name => event => {
+        console.log(event)
+        console.log(name)
         if (event.target.value !== ""){
             this.setState({
                 [name]: event.target.value
@@ -101,7 +105,7 @@ class SurveyForm extends React.Component{
                     </FormControl>
 
                     <FormControl variant="outlined" className={classes.formControl}>
-                        <Typography variant="h5" inline={false}>I wanna learn how to</Typography>
+                        <Typography variant="h5" inline={false}>I want to learn how to</Typography>
                         <InputLabel htmlFor="topic"></InputLabel>
                         <NativeSelect
                             value={this.state.topic}
@@ -136,11 +140,9 @@ class SurveyForm extends React.Component{
                             <option value={"Mandarin"}>Chinese-Mandarin</option>
                             <option value={"Japanese"}>Japanese</option>
                             <option value={"Cantonese"}>Chinese-Cantonese(currently unavailbale)</option>
-                            <option value={"Spanish"}>Spanish(currently unavailbale)</option>
-                            <option value={"French"}>French(currently unavailbale)</option>
-                            <option value={"German"}>German(currently unavailbale)</option>
                             <option value={"Tamil"}>Tamil(currently unavailable)</option>
                             <option value={"Hebrew"}>Hebrew(currently unavailable)</option>
+                            <option value={"More"}>More languages...</option>
                         </NativeSelect>
                         <FormHelperText>Select the language you want to learn</FormHelperText>
                     </FormControl>
@@ -151,13 +153,22 @@ class SurveyForm extends React.Component{
                     <p></p>
                     <Divider/>
                     <p></p>
-                    <Grid item>
-                    <Typography variant="subheading" color="inherit" align="left">Already have an account?   
-                        <Button color="secondary" variant="contained" size="medium" onClick={() => this.props.history.push('/login')} style={{marginLeft:"5%"}}s>
-                        <Typography variant="subheading" color="inherit">Login</Typography>
-                        </Button>
-                    </Typography>
-                    </Grid>
+                    {
+                        this.state.targetLanguage !== "" ?
+                        <Grid item>
+                        <Typography variant="subheading" color="inherit" align="left">Already have an account?   
+                            <Button color="secondary" variant="contained" size="medium" onClick={() => this.props.history.push('/login')} style={{marginLeft:"5%"}}s>
+                            <Typography variant="subheading" color="inherit">Login</Typography>
+                            </Button>
+                        </Typography>
+                        </Grid>
+                        :
+                        <Grid item>
+                        </Grid>
+
+
+                    }
+
  
                 </FormGroup> 
             </form>  

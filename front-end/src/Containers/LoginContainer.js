@@ -41,9 +41,8 @@ class LoginContainer extends React.Component {
                         alignItems="center">
                         <Grid item xs>
                             <img src={logo} alt="Logo" style={{ width: 200, height: 200 }}></img>
-                            <Typography variant="subheading">A Learner-Centered App for</Typography>
-                            <Typography variant="subheading">Learning Foreign Languages</Typography>
-                            
+                            <Typography variant="subtitle1">A Learner-Centered App for Studying</Typography>
+                            <Typography variant="subtitle1">Less Commonly Taught Languages.</Typography>
                             <p>
                                 <Divider variant="middle" />
                             </p>

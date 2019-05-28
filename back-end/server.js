@@ -12,6 +12,7 @@ const LanguageTopic = require('./models/LanguageTopic')
 const UserTopic= require('./models/UserTopic');
 const Quiz = require('./models/Quiz');
 const Question = require('./models/Question');
+const textToSpeech = require('./textToSpeech')
 
 //socket.io for user authentication and language change
 //change localhost to ip address after deployment
@@ -36,7 +37,7 @@ io.on("connection", socket => {
     } else {
         console.log(
             "\x1b[31m",
-            "--------------------------------------------------- YOU DONE GOT KICKED OUT ---------------------------------------------------"
+            "Not authorized user. Socket connection disconnected."
         );
         socket.disconnect(true);
     }
@@ -75,10 +76,11 @@ io.on("connection", socket => {
     });
 
     //find all languages belong to the user
-    socket.on("userLanguages.index", respond => {
-        UserLanguage.findAll().then(userLanguages => {
-            respond(userLanguages);
-        });
+    socket.on("userLanguages.index", async params => {
+        let current_user = await User.findOne({id: params.id});
+        let userLanguages = await current_user.getLanguages();
+        console.log(userLanguages)
+        io.emit("userLanguages.found", userLanguages);
     });
 
     socket.on("userLanguages.update", async params => {
@@ -88,6 +90,11 @@ io.on("connection", socket => {
         let userLanguages = await UserLanguage.findAll();
         io.emit("userLanguages.updated", userLanguages);
     });
+
+    //text to speech socket connection
+    socket.on('text.toSpeech', (text_pinyin, respond) => {
+        socket.emit("tts.finished", {url: textToSpeech(text_pinyin.text)})
+    })
 
     //socket connections for topic model
     socket.on("topics.index", respond => {
@@ -110,6 +117,39 @@ io.on("connection", socket => {
         let userTopics = await UserTopic.findAll();
         io.emit("userTopics.updated", userTopics);
     });
+
+    //find topics belong to a language
+    socket.on("FindTopicDetails", async searchQuery => {
+        let language = await Language.findOne({
+            where: {name: searchQuery.language}
+        })
+        let topicDetails = await LanguageTopic.findOne({
+        where: {
+            languageId: language.id,
+            topicId: searchQuery.topicId
+        }})
+        // console.log(topicDetails);
+        io.emit("TopicDetailsFound", topicDetails)
+    })
+
+    //find quizzes belong to a topic of a specific language
+    socket.on("FindQuizzes", async searchQuery => {
+        let language = await Language.findOne({
+            where: { name: searchQuery.language }
+        })
+        let topic = await Topic.findOne({
+            where: { name: searchQuery.topic }
+        })
+        let quizzes = await Quiz.findAll({
+            where: {
+                languageId: language.id,
+                topicId: topic.id
+            }
+        })
+        console.log(quizzes)
+        //send quizzes back to front end
+        io.emit("QuizzesFound", quizzes)
+    })
 });
 
 
@@ -124,9 +164,10 @@ const app = express();
 //use middleware for express
 app.use(cors());
 app.use(bodyParser.json());
+app.use('/public', express.static('public'));
+
 
 //set charSet for all apis
-
 app.all("*", function (req, res, next) {
     // res.header("Access-Control-Allow-Credentials", 'true');
     res.header('Access-Control-Allow-Origin', '*');
@@ -141,6 +182,7 @@ app.all("*", function (req, res, next) {
         next();
     }
 });
+
 //http methods for user model, API
 app.get("/users", (req, res) => {
     User.findAll().then(users => {
@@ -179,7 +221,7 @@ app.patch("/users/:id", async (req, res) => {
 
 app.delete("/users/:id", async (req, res) => {
     let user = await User.findByPk(req.params.id);
-    console.log(user);
+    // console.log(user);
     user.destroy(req.body);
 });
 
@@ -212,7 +254,7 @@ app.post("/languages", (req, res) => {
             User.findByPk(localStorage.userid).then(user => {
                 user.addLanguage(savedLanguage, { through: { role: "learner" } });
             });
-            console.log(savedLanguage);
+            // console.log(savedLanguage);
             io.emit("languageAdded", savedLanguage);
             res.status(200);
         });
@@ -315,8 +357,6 @@ app.get("/languages/:id/users", (req, res) => {
     });
 });
 
-
-
 //2. languageTopic model, API
 app.get("/languageTopics", (req, res) => {
     LanguageTopic.findAll().then(languageTopics => {
@@ -368,7 +408,7 @@ app.post("/login", (req, res) => {
             username: req.body.username
         }
     }).then(user => {
-        console.log(user);
+        // console.log(user);
         if (user.authenticate(req.body.password)) {
             res.json(user);
         }

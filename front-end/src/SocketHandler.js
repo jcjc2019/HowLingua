@@ -18,9 +18,8 @@ export default class SocketHandler {
         });
     };
 
-    static registerSocketListener = (emitType, callback) => {
+    static on = (emitType, callback) => {
         console.log("listener registered");
-
         this.io.on(emitType, callback);
     };
 

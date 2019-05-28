@@ -30,9 +30,10 @@ import darkTheme from '../themes/dark';
 import lightTheme from '../themes/light';
 import Switch from "@material-ui/core/Switch";
 import MainContainer from "./MainContainer";
-import { withRouter } from 'react-router-dom';
+import { NavLink, withRouter, Route } from 'react-router-dom';
 import Button from "@material-ui/core/Button";
 import LoginForm from "../Containers/LoginContainer"
+
 
 const drawerWidth = 220;
 const theme1 = createMuiTheme(lightTheme);
@@ -145,9 +146,17 @@ class NavDrawer extends React.Component {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" color="inherit" noWrap>
-                        HowLingua: A Learner-Centered App for Learning Foreign Languages
-                    </Typography>
+                        {
+                            localStorage.getItem('userid') === null ?
+                            <Typography variant="h6" color="inherit" noWrap>
+                            Please log in or create a new account to access all content.
+                            </Typography>
+                            :
+                            <Typography variant="h6" color="inherit" noWrap>
+                            HowLingua: A Learner-Centered App for Studying Less Commonly Taught Languages
+                            </Typography>
+                        }
+
                     
                     <Button 
                         color="inherit" 
@@ -155,10 +164,11 @@ class NavDrawer extends React.Component {
                             marginLeft: 'auto',
                             marginRight: '10%',
                         }}
-                        onClick={() => this.props.history.push('/login')}
-                        >
+                        onClick={() => this.props.history.push('/login')
+                    }>
                         {localStorage.getItem('userid') === null ? "Sign in" : ""}
                     </Button>
+
                 </Toolbar>
             </AppBar>
 
@@ -190,42 +200,84 @@ class NavDrawer extends React.Component {
                     </Typography>
                         <Typography variant="h6" align="center">{localStorage.getItem('userid') === null ? "Learner" : `${localStorage.getItem('username')}`}!
                     </Typography>
-                    <Divider/>    
-                    {["Languages", "Topics"].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <LanguageIcon /> : <TopicIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
-                </List>
-                <Divider />
-                <List>
-                    {["Trophies", "Leaderboard"].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <TrophiesIcon /> : <LeaderboardIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
-                </List>
-                <Divider />
-                <List>
-                    <ListItem button key="Account">
-                        <ListItemIcon>
-                            {localStorage.getItem("userid") !== null ? <SettingsIcon /> : <SignupIcon />}
-                        </ListItemIcon>
-                    <ListItemText primary={localStorage.getItem("userid") !== null ? "Settings" : "Signup for an account"} />
-                    </ListItem>
+                    <Divider/>
 
-                    <ListItem button key = "Exit" onClick = {this.handleLogout}>
+                            <ListItem button key="languages" onClick={() => this.props.history.push('/languages')}>
                         <ListItemIcon>
-                            <LogoutIcon />
+                            <LanguageIcon />
                         </ListItemIcon>
-                    <ListItemText primary={localStorage.getItem("userid") !== null ? "Logout" : "Exit"} />
-                    </ListItem>
+                    <ListItemText primary="Languages" />
+                    </ListItem> 
+
+                    <ListItem button key="topics" onClick={() => this.props.history.push('/topics')} >
+                    <ListItemIcon>
+                        <TopicIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Topics" />
+                    </ListItem>                                              
+                </List>
+
+                <Divider />
+                {
+                    localStorage.getItem('userid') !== null  ?
+                    (<List>
+                        <ListItem button key="Trophies">
+                            <ListItemIcon>
+                                <TrophiesIcon />
+                            </ListItemIcon>
+                            <ListItemText primary={"Trophies"} onClick={() => this.props.history.push('/trophies')}/>
+                        </ListItem>
+                        <ListItem button key="Leaderboard">
+                            <ListItemIcon>
+                                <LeaderboardIcon />
+                            </ListItemIcon>
+                            <ListItemText primary={"Leaderboard"} onClick={() => this.props.history.push('/leaderboard')}/>
+                        </ListItem>                        
+                        <ListItem button key="Logout" onClick={this.handleLogout}>
+                           <ListItemIcon>
+                                <LogoutIcon />
+                           </ListItemIcon>
+                           <ListItemText primary={"Logout"} />
+                        </ListItem>
+                    </List>)
+                    :
+                    (
+                    <List>
+                        <ListItem button key="Exit" onClick={this.handleLogout}>
+                           <ListItemIcon>
+                                <LogoutIcon />
+                           </ListItemIcon>
+                           <ListItemText primary={"Exit"} />
+                        </ListItem>
+                    </List>
+                    )
+
+                }
+
+                <Divider />
+                <List>
+                    {
+                        localStorage.getItem("userid") !== null ?
+                        (
+                            <ListItem button key="Settings">
+                              <ListItemIcon>
+                                <SettingsIcon />
+                              </ListItemIcon>
+                             <ListItemText primary= "Settings" />
+                             </ListItem>
+                        )
+                        :
+                        (
+                            <ListItem button key="Signup" onClick={()=> this.props.history.push('/signup')}>
+                              <ListItemIcon>
+                               <SignupIcon />
+                              </ListItemIcon>
+                            <ListItemText primary="Signup for an account" />
+                            </ListItem>
+                        )
+                    }
+                
+
                 </List>
                 <Divider />
                 <List>
@@ -259,13 +311,15 @@ class NavDrawer extends React.Component {
                 {
                    localStorage.getItem('topic') !== "greetings" ?
                     (<Typography variant="h6" align="center">
-                         Please sign in or create a new account to access the content.
                      <LoginForm />
                     </Typography>
                     )
                    :
-                    (<MainContainer />)
+                    (
+                      <MainContainer />                     
+                    )
                 }
+
             </main>
         </div>
         </MuiThemeProvider>

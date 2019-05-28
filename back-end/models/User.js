@@ -11,8 +11,10 @@ const sequelize = new Sequelize({
 
 //create this model
 const Model = Sequelize.Model;
+
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+
 class User extends Model {
     authenticate(rawPassword) {
         return bcrypt.compareSync(rawPassword, this.password_digest);
@@ -27,6 +29,7 @@ class User extends Model {
     get token() {
         return jwt.sign({ id: this.id }, "ni_hao_zai_jian");
     }
+    
     toJSON() {
         let jsonObject = { ...this.dataValues, token: this.token };
         delete jsonObject.password_digest;

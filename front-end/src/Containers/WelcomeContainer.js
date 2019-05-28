@@ -39,8 +39,8 @@ class WelcomeContainer extends React.Component{
                     alignItems="center">
                     <Grid item xs>
                         <img src={logo} alt="Logo" style={{ width: 200, height: 200}}></img>
-                            <Typography variant="subheading">A Learner-Centered App for</Typography>
-                            <Typography variant="subheading">Learning Foreign Languages</Typography>
+                            <Typography variant="subheading">A Learner-Centered App for Studying</Typography>
+                            <Typography variant="subheading">Less Commonly Taught Languages.</Typography>
                         <SurveyForm />
                     </Grid>
                 </Grid>

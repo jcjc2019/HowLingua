@@ -15,8 +15,10 @@ const Topic = require("./Topic");
 
 //define & create join table
 
-LanguageTopic = sequelize.define('language_topic', {
-    role: Sequelize.STRING
+LanguageTopic = sequelize.define('language_topic', 
+{
+    details: Sequelize.STRING,
+    vocabulary: Sequelize.STRING,
 });
 
 Language.belongsToMany(Topic, {

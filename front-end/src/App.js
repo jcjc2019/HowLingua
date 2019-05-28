@@ -2,17 +2,15 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import NavDrawer from './Containers/NavDrawer';
 import WelcomeContainer from './Containers/WelcomeContainer';
-import LoginContainer from './Containers/LoginContainer';
-import SignupContainer from './Containers/SignupContainer';
+
 export default class App extends React.Component {
 
   render(){
-
+    //NEED TO REWRITE ROUTES HERE.
 
     return (
-    <div>
       <BrowserRouter>
-        <Switch>
+      <Switch>
             <Route exact path="/" render={() =>
               (localStorage.length !== 0 &&
                 localStorage.getItem('nativeLanguage') !== "" &&
@@ -26,11 +24,11 @@ export default class App extends React.Component {
               localStorage.getItem('topic') !== "" && 
               localStorage.getItem('targetLanguage') !== "") || (localStorage.getItem("userid") !== null) ? 
               <NavDrawer /> : <WelcomeContainer /> } />
-          <Route exact path="/login" component={LoginContainer} />
-          <Route exact path="/signup" component={SignupContainer} />
-        </Switch>
+          
+            <Route path="/" component={NavDrawer} />
+
+      </Switch>
       </BrowserRouter>
-    </div>
     )
   }
 }

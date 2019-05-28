@@ -5,6 +5,7 @@ const Sequelize = require('sequelize');
 
 //use sqlite database
 const sequelize = new Sequelize({
+    //use sqlite database
     dialect: 'sqlite',
     storage: './database.sqlite'
 });
@@ -18,7 +19,10 @@ Language.init({
         type: Sequelize.STRING,
         allowNull: false
     },
-    region: {
+    introduction: {
+        type: Sequelize.STRING
+    },
+    imageURL: {
         type: Sequelize.STRING
     }
 }, {

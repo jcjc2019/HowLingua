@@ -64,7 +64,6 @@ class LoginForm extends React.Component{
     }
 
 
-
     fetchData = ()=> {
         fetch(`${expressUrl}/login`, {
             method: "POST",
@@ -85,16 +84,13 @@ class LoginForm extends React.Component{
             localStorage.setItem("token", user.token);
             console.log(localStorage);
             //show Drawer page 
-            this.props.history.push('/main')
+            this.props.history.push('/languages')
         })
-        
+    }
         //.then(()=> 
         //TODO: create link between user and language, between user and topic
         //)
-    }
-
-
-
+    
     render(){
         const { classes } = this.props;
 

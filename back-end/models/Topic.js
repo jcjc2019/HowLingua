@@ -39,3 +39,4 @@ sequelize.sync()
 
 //A topic has many quizzes, add topicId to quiz table
 Topic.hasMany(Quiz, {as: 'Quizzes'})
+

@@ -18,6 +18,9 @@ Question.init({
         type: Sequelize.STRING,
         allowNull: false
     },
+    options: {
+        type: Sequelize.STRING,
+    },
     answer: {
         type: Sequelize.STRING,
         allowNull: false
