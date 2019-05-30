@@ -30,7 +30,7 @@ import darkTheme from '../themes/dark';
 import lightTheme from '../themes/light';
 import Switch from "@material-ui/core/Switch";
 import MainContainer from "./MainContainer";
-import { NavLink, withRouter, Route } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import Button from "@material-ui/core/Button";
 import LoginForm from "../Containers/LoginContainer"
 
@@ -121,6 +121,13 @@ class NavDrawer extends React.Component {
         localStorage.clear();
         this.props.history.push('/')
     }
+
+    renderSettings =()=> {
+        if (localStorage.getItem('userid') !== null){
+            this.props.history.push('/settings')
+        }
+
+    }
     
     render (){
         const { classes, theme } = this.props;
@@ -157,17 +164,19 @@ class NavDrawer extends React.Component {
                             </Typography>
                         }
 
-                    
-                    <Button 
-                        color="inherit" 
-                        style={{
-                            marginLeft: 'auto',
-                            marginRight: '10%',
-                        }}
-                        onClick={() => this.props.history.push('/login')
-                    }>
-                        {localStorage.getItem('userid') === null ? "Sign in" : ""}
-                    </Button>
+                    {
+                       localStorage.getItem('userid') === null 
+                       ?
+                        (<Button color="inherit" style={{marginLeft: 'auto',marginRight: '10%'}} onClick={() => this.props.history.push('/login')}> 
+                        Sign in
+                        </Button>)
+                        :
+                        (
+                        <Typography variant="button" color="inherit" style={{ marginLeft: 'auto', marginRight: '10%' }} >Welcome!</Typography>
+                        )
+
+                    }
+
 
                 </Toolbar>
             </AppBar>
@@ -221,12 +230,6 @@ class NavDrawer extends React.Component {
                 {
                     localStorage.getItem('userid') !== null  ?
                     (<List>
-                        <ListItem button key="Trophies">
-                            <ListItemIcon>
-                                <TrophiesIcon />
-                            </ListItemIcon>
-                            <ListItemText primary={"Trophies"} onClick={() => this.props.history.push('/trophies')}/>
-                        </ListItem>
                         <ListItem button key="Leaderboard">
                             <ListItemIcon>
                                 <LeaderboardIcon />
@@ -259,7 +262,7 @@ class NavDrawer extends React.Component {
                     {
                         localStorage.getItem("userid") !== null ?
                         (
-                            <ListItem button key="Settings">
+                            <ListItem button key="Settings" onClick={this.renderSettings}>
                               <ListItemIcon>
                                 <SettingsIcon />
                               </ListItemIcon>
@@ -281,7 +284,7 @@ class NavDrawer extends React.Component {
                 </List>
                 <Divider />
                 <List>
-                    <ListItem button key = "About">
+                    <ListItem button key = "About" onClick={()=> this.props.history.push('/about')}>
                         <ListItemIcon>
                             <AboutIcon />
                         </ListItemIcon>
@@ -308,17 +311,8 @@ class NavDrawer extends React.Component {
                 })}
             >
                 <div className={classes.drawerHeader} />
-                {
-                   localStorage.getItem('topic') !== "greetings" ?
-                    (<Typography variant="h6" align="center">
-                     <LoginForm />
-                    </Typography>
-                    )
-                   :
-                    (
+
                       <MainContainer />                     
-                    )
-                }
 
             </main>
         </div>

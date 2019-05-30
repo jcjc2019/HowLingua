@@ -4,6 +4,7 @@
 const Sequelize = require('sequelize');
 
 const Quiz = require("./Quiz");
+const Vocabulary = require("./Vocabulary")
 
 //use sqlite database
 const sequelize = new Sequelize({
@@ -39,4 +40,7 @@ sequelize.sync()
 
 //A topic has many quizzes, add topicId to quiz table
 Topic.hasMany(Quiz, {as: 'Quizzes'})
+
+//A topic has many vocabularies, add topicId to vocabulary table
+Topic.hasMany(Vocabulary, {as: 'Vocabularies'})
 

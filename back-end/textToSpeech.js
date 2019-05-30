@@ -1,4 +1,4 @@
-module.exports = function(text){
+module.exports = function(text,language){
     console.log("Microsoft Text to Speech function here. get the audio")
     // Requires request and request-promise for HTTP requests
     // e.g. npm install request request-promise
@@ -7,6 +7,16 @@ module.exports = function(text){
     const fs = require('fs');
     // Requires xmlbuilder to build the SSML body
     const xmlbuilder = require('xmlbuilder');
+    let code = "";
+    let voice = "";
+    //change language options
+    if (language === "Mandarin") {
+        code = "zh-CN";
+        voice = "Microsoft Server Speech Text to Speech Voice (zh-CN, Yaoyao, Apollo)";
+    } else if (language === "Japanese") {
+        code = "ja-JP";
+        voice = "Microsoft Server Speech Text to Speech Voice (ja-JP, Ayumi, Apollo)";
+    }
 
     // Gets an access token.
     function getAccessToken(subscriptionKey) {
@@ -22,14 +32,14 @@ module.exports = function(text){
     // Make sure to update User-Agent with the name of your resource.
     // You can also change the voice and output formats. See:
     // https://docs.microsoft.com/azure/cognitive-services/speech-service/language-support#text-to-speech
-    function textToSpeech(accessToken, text) {
+    function textToSpeech(accessToken, text, language) {
         // Create the SSML request.
         let xml_body = xmlbuilder.create('speak')
             .att('version', '1.0')
-            .att('xml:lang', 'zh-CN')
+            .att('xml:lang', code)
             .ele('voice')
-            .att('xml:lang', 'zh-CN')
-            .att('name', "Microsoft Server Speech Text to Speech Voice (zh-CN, Yaoyao, Apollo)")
+            .att('xml:lang', code)
+            .att('name', voice)
             .txt(text)
             .end();
         // Convert the XML into a string to send in the TTS request.

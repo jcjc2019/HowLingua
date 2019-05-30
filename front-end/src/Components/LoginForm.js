@@ -73,7 +73,7 @@ class LoginForm extends React.Component{
             body: JSON.stringify({
                 username: this.state.username,
                 email: this.state.email,
-                password: this.state.password
+                password: this.state.password,
             })
         })
         .then(res => res.json())
@@ -82,6 +82,7 @@ class LoginForm extends React.Component{
             localStorage.setItem("username", user.username);
             localStorage.setItem("userid", user.id);
             localStorage.setItem("token", user.token);
+            localStorage.setItem("points", user.points)
             console.log(localStorage);
             //show Drawer page 
             this.props.history.push('/languages')

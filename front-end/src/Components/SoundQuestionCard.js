@@ -12,6 +12,7 @@ import MicOffIcon from 'react-ionicons/lib/MdMicOff';
 import Hearing from "@material-ui/icons/Hearing";
 import SocketHandler from "../SocketHandler";
 import Slide from '@material-ui/core/Slide';
+// import io from "socket.io-client";
 
 
 //add fetch to get current user and to post points to users database
@@ -31,22 +32,20 @@ const styles = theme => ({
 const recognition = new window.webkitSpeechRecognition();
 
 //change this after deployment
-const expressUrl = "http://localhost:3001"
+//const expressUrl = "http://localhost:3001"
 
 class SoundQuestionCard extends React.Component {
 
-    constructor(){
-        super()
-        SocketHandler.connect(localStorage.getItem("token"));
-    }
+    // constructor(){
+    //     super()
+    //     SocketHandler.connect(localStorage.getItem("token"));
+    // }
     
     state  = {
-        //pass vocabulary as props to state, to be added.
-        vocabulary: "你好", // practice question asssign this to this.props.vocabulary
         recording: false,
         transcript: "",
         showResult: false,
-        points: 0
+        points: 0,
     }
 
     componentDidMount(){
@@ -54,29 +53,63 @@ class SoundQuestionCard extends React.Component {
             ...this.state,
             points: localStorage.getItem('points')
         })
-        //put all socket events inside componentdidmount
-        let text = document.querySelector("#vocabulary").innerText;
-        let pinyin = document.querySelector("#pinyin").innerText;
-        SocketHandler.emit('text.toSpeech', { text: text });
+        let text = this.props.vocabulary.character;
+        let language = localStorage.getItem("foreignLanguage")
+        
+        // SocketHandler.on('tts.finished', data => {
+        //     console.log("Your file is ready")
+        //     // let audio = new Audio(`${data.url}`)
+        //     let audio = new Audio(`http://localhost:3001/public/${text}_output.wav`)
+        //     audio.play()
+        // }) 
+        SocketHandler.emit('text.toSpeech', { text: this.props.vocabulary.character, language: language })
+
+    }
+
+    componentDidUpdate() {
+        let text = this.props.vocabulary.character;
+        let language = localStorage.getItem("foreignLanguage")
+
+        SocketHandler.emit('text.toSpeech', { text: this.props.vocabulary.character, language: language })
+        
+    }
+
+    getAudio(){
+        let text = this.props.vocabulary.character;
+        let language = localStorage.getItem("foreignLanguage")
+
+        SocketHandler.emit('text.toSpeech', { text: this.props.vocabulary.character, language: language })
+
+        SocketHandler.on('tts.finished', data => {
+            console.log("Your file is ready")
+            // let audio = new Audio(`${data.url}`)
+            let audio = new Audio(`http://localhost:3001/public/${text}_output.wav`)
+            audio.play()
+        })
     }
 
     playTTS = ()=> {
-        let text = document.querySelector("#vocabulary").innerText;
+        SocketHandler.emit('text.toSpeech', { text: this.props.vocabulary.character })
+        let text = this.props.vocabulary.character;
         let audio = new Audio(`http://localhost:3001/public/${text}_output.wav`)
         audio.play()
+
     }
 
     startRecording = (event)=> {
 
-        this.setState({ ...this.state, recording: true })
         //SPEECH TO TEXT CODE
         recognition.continuous = true;
         recognition.interimResults = true;
-        recognition.maxAlternatives = 1;
+        // recognition.maxAlternatives = 1;
 
         //change the language code here for other languages
-        recognition.lang = 'cmn-Hans-CN'
-
+        if (localStorage.getItem('foreignLanguage') === "Mandarin"){
+            recognition.lang = 'cmn-Hans-CN'
+        }else if(localStorage.getItem('foreignLanguage') === "Japanese"){
+            recognition.lang = "ja-JP"
+        }
+        
         recognition.onresult =  (event) => {
             let interim_transcript = '';
             let final_transcript = "";
@@ -102,24 +135,34 @@ class SoundQuestionCard extends React.Component {
             // recognition.stop()
         }
         recognition.start();
-        
+        this.setState({ ...this.state, recording: true })
     }
 
     stopRecording =()=> {
         recognition.stop();
-        this.setState({ ...this.state, recording: false })
+        this.setState({ 
+            ...this.state, 
+            recording: false 
+        })
         let speaker = new window.SpeechSynthesisUtterance();
-        speaker.lang = 'zh-CN';
-        speaker.text = `Your recording was recognized as ${this.state.transcript}` ;
-        speechSynthesis.speak(speaker);
+        if (localStorage.getItem("foreignLanguage") === "Mandarin"){
+            speaker.lang = 'zh-CN';
+            speaker.text = `You said ${this.state.transcript}`;
+            speechSynthesis.speak(speaker);
+        }else if (localStorage.getItem("foreignLanguage") === "Japanese"){
+            speaker.lang = "ja-JP";
+            speaker.text = `You said ${this.state.transcript}`;
+            speechSynthesis.speak(speaker);            
+        }
+
     }
 
     renderResult =() => {
         //only render result card after user's recording
         if(this.state.transcript !== ""){
-            this.setState({ ...this.state, showResult: true })
+            this.setState({ ...this.state, showResult: !this.state.showResult })
             //add points
-            if (this.state.transcript === this.state.vocabulary) {
+            if (this.state.transcript === this.props.vocabulary.character) {
                 let score = parseInt(localStorage.getItem("points"))
                 score = score + 100
                 localStorage.setItem("points", score)
@@ -131,107 +174,106 @@ class SoundQuestionCard extends React.Component {
         }
     }
 
-    renderNext = ()=> {
-        this.setState({...this.state, points: localStorage.getItem('points')})
-        console.log("render next question card")
-    }
-
     render() {
+
+        //map characters to all elements below return
         const { classes } = this.props
         return (
             <div className={classes.root}>
-                <Grid container spacing={24}>
-                    <Grid item xs={8}>
-                        <Paper className={classes.paper}>
-                            <Typography variant="h4" color="primary">
-                                Click
-                                 <IconButton
-                                    color="secondary"
-                                    onClick={this.playTTS}
-                                >
-                                    <Hearing />
-                                </IconButton>
-                                to listen
-                            </Typography>
-                            <p>
-                            <Typography variant ="h5" color="inherit" id="vocabulary">
-                                {this.state.vocabulary}
-                            </Typography>
-                            <Typography variant="h5" color="inherit" id="punctuation">
-                                ？
-                            </Typography>                            
-                            <Typography variant="h5" color="inherit" id="pinyin">
-                               pinyin here
-                            </Typography>
-                            </p>
-                            <Divider />
-                            <p>
-
-                            {
-                            (this.state.recording === true) ? 
-                            (<Typography variant="h4" color="secondary">
+                    <Grid container spacing={24}>
+                        <Grid item xs={8}>
+                            <Paper className={classes.paper}>
+                            <Typography variant="subtitle1">Word <span>{this.props.counter}</span> of <span>{this.props.total}</span>.</Typography>
+                                <Typography variant="h4" color="primary">
                                     Click
-                                <IconButton
-                                    color="secondary"
-                                    onClick={this.stopRecording}
-                                >
-                                    <MicOffIcon color="red" shake={false} />
-                                </IconButton>
-                                to listen to your pronunciation.
-                            </Typography>)
-                            :
-                            (<Typography variant="h4" color="primary">
-                                Click
                                  <IconButton
-                                   onClick={this.startRecording}
+                                        color="secondary"
+                                        onClick={this.playTTS}
                                     >
-                                    <MicIcon color="green" shake={true} />
-                                  </IconButton>
-                                    to repeat the word.
-                            </Typography>)
-                            }
-                            </p>
-                            <Divider />
-                            <Typography variant="h4">
-                            You said: 
-                            </Typography>
-                            <p>
-                            <Typography variant="h5" id="transcript">
-                            ...
-                            </Typography>
-                            </p>
-                            <p></p>
-                            <Typography>
-                                <Button size="large" color="primary" variant="contained" onClick={this.renderResult}>
-                                    Show Result
-                                </Button>
-                            </Typography>
-                        </Paper>
-                    </Grid>
+                                        <Hearing />
+                                    </IconButton>
+                                    to listen
+                                    </Typography>
 
-                    <Slide direction="up" in={this.state.showResult} mountOnEnter unmountOnExit>
-                    <Grid item xs={4}>
-                        <Paper className={classes.paper}>  
-                            {
-                                (this.state.transcript === this.state.vocabulary) ?
-                                <div>
-                                <Typography variant="h5">
-                                Congratulations! Your pronunciation is perfect. Computer can understand your {localStorage.getItem('foreignLanguage')}! 
-                                <p>
-                                <Button size="large" color="primary" variant="contained" onClick={this.renderNext}>
-                                Next
+                                    <Typography variant="h5" color="inherit" id="vocabulary">
+                                        {this.props.vocabulary.character}
+                                    </Typography>
+
+                                    <Typography variant="h6" color="inherit" id="pinyin">
+                                        {this.props.vocabulary.transliteration}
+                                    </Typography>
+
+                                    <Typography variant="h6" color="inherit" id="meaning">
+                                        {this.props.vocabulary.meaning}
+                                    </Typography>
+
+                                <Divider />
+
+                                    {
+                                        (this.state.recording === true) ?
+                                            (<Typography variant="h4" color="secondary">
+                                                Click
+                                <IconButton
+                                                    color="secondary"
+                                                    onClick={this.stopRecording}
+                                                >
+                                                    <MicOffIcon color="red" shake={false} />
+                                                </IconButton>
+                                                to listen to your pronunciation.
+                            </Typography>)
+                                            :
+                                            (<Typography variant="h4" color="primary">
+                                                Click
+                                 <IconButton
+                                                    onClick={this.startRecording}
+                                                >
+                                                    <MicIcon color="green" shake={true} />
+                                                </IconButton>
+                                                to repeat the word.
+                            </Typography>)
+                                    }
+
+                                <Divider />
+                                <Typography variant="h4">
+                                    You said:
+                            </Typography>
+                
+                            <Typography variant="h5" id="transcript">
+                                ...
+                            </Typography>
+                               
+                                <Typography>
+                                    <Button size="large" color="primary" variant="contained" onClick={this.renderResult}>
+                                        Show Result
                                 </Button>
-                                </p>
                                 </Typography>
-                                <Typography variant="title">Your current score is: {this.state.points}</Typography>
-                                </div>
-                                :
-                                <Typography variant="h5">Please Listen and repeat again to practice.</Typography>
-                            }
-                        </Paper>
+                            </Paper>
+                        </Grid>
+
+                        <Slide direction="up" in={this.state.showResult} mountOnEnter unmountOnExit>
+                            <Grid item xs={4}>
+                                <Paper className={classes.paper}>
+                                    {
+                                    (this.state.transcript === this.props.vocabulary.character) ?
+                                            <div>
+                                                <Typography variant="h5">
+                                                    Congratulations! Your pronunciation is perfect. Computer can understand your {localStorage.getItem('foreignLanguage')}!
+                                                    <p></p>
+                                                        <Button size="large" color="primary" variant="contained" onClick={this.props.renderNext}>
+                                                            Next
+                                                        </Button>
+                                                 
+                                                </Typography>
+                                                <p></p>
+                                            <Typography variant="h5">Your current score is: {localStorage.getItem('points')}</Typography>
+                                            </div>
+                                            :
+                                            <Typography variant="h5">Please Listen and repeat again to practice.</Typography>
+                                    }
+                                </Paper>
+                            </Grid>
+                        </Slide>
                     </Grid>
-                    </Slide>
-                </Grid>
             </div>
         )
     }

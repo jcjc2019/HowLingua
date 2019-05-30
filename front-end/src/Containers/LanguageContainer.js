@@ -4,8 +4,10 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import Typography from "@material-ui/core/Typography";
-import { NavLink, withRouter, Route } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import SocketHandler from "../SocketHandler";
+import { Divider } from "@material-ui/core";
+
 
 
 const styles = theme => ({
@@ -89,45 +91,66 @@ const expressUrl = "http://localhost:3001"
 class LanguageCards extends React.Component {
     
     state ={
-        allLanguages: [],
-        userLanguages: [],
-    }
-
-    constructor() {
-        super()
-        SocketHandler.connect(localStorage.getItem("token"));
+        allLanguages: []
     }
 
     componentDidMount(){
-        fetch(`${expressUrl}/languages`)
-        .then(res => res.json())
-        .then(allLanguages => {
+        if(localStorage.getItem("userid") === null){
+            fetch(`${expressUrl}/languages`)
+                .then(res => res.json())
+                .then(allLanguages => {
+                    this.setState({
+                        ...this.state,
+                        allLanguages: allLanguages
+                    })
+                })
+        }else{
+            let userid = localStorage.getItem('userid')
+            fetch(`${expressUrl}/users/${userid}/languages`)
+                .then(res => res.json())
+                .then(userLanguages => {
+                    this.setState({
+                        ...this.state,
+                        allLanguages: userLanguages
+                    })
+                })
+        }
+    }
+
+    handleChange = name => event => {
+        console.log(event)
+        console.log(name)
+        if (event.target.value !== "") {
             this.setState({
-                ...this.state,
-                allLanguages: allLanguages
+                [name]: event.target.value
+            })
+        }
+    };
+
+    handleClick=(id) => {
+        
+        fetch(`${expressUrl}/languages/${id}`)
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            localStorage.setItem('foreignLanguage', data.name);
+            this.props.history.push({
+            pathname: `/languages/${data.id}`,
             })
         })
 
-        SocketHandler.emit('userLanguages.index', { id: localStorage.userid });
-        SocketHandler.on("userLanguages.found", data => (
-            this.setState({
-                ...this.state,
-                userLanguages: data
-            })
-        ))
     }
     
     //map data to language cards
     render(){
         const { classes } = this.props;
+        console.log(this.state.allLanguages)
         return (
             <div className={classes.root}>
-                { localStorage.getItem('userid') === null
-                ?
-                (this.state.allLanguages.map(language => (
+                {this.state.allLanguages.map((language,i) => (
                     <ButtonBase
                         focusRipple
-                        key={language.name}
+                        key={language.id}
                         className={classes.image}
                         focusVisibleClassName={classes.focusVisible}
                         style={{
@@ -142,16 +165,7 @@ class LanguageCards extends React.Component {
                         />
                         <span className={classes.imageBackdrop} />
                         <span className={classes.imageButton}
-                        onClick={()=> 
-                            this.props.history.push({
-                                pathname: `/languages/${language.id}`,
-                                props: {
-                                    name: language.name,
-                                    introduction:language.introduction,
-                                    imageURL: language.imageURL
-                                }
-                            })
-                        }>
+                        onClick={(id)=> this.handleClick(language.id)}>
                             <Typography
                                 component="span"
                                 variant="h4"
@@ -163,50 +177,7 @@ class LanguageCards extends React.Component {
                             </Typography>
                         </span>
                     </ButtonBase>
-                )))
-                :
-                (this.state.userLanguages.map(language => (
-                    <ButtonBase
-                        focusRipple
-                            key={language.name}
-                            className={classes.image}
-                            focusVisibleClassName={classes.focusVisible}
-                            style={{
-                                width: "33%"
-                            }}
-                        >
-                            <span
-                                className={classes.imageSrc}
-                                style={{
-                                    backgroundImage: `url("${language.imageURL}")`
-                                }}
-                            />
-                            <span className={classes.imageBackdrop} />
-                            <span className={classes.imageButton}
-                            onClick={() =>
-                                this.props.history.push({
-                                    pathname: `/languages/${language.id}`,
-                                    props: {
-                                        name: language.name,
-                                        introduction: language.introduction,
-                                        imageURL: language.imageURL
-                                    }
-                                })
-                            }>                                
-                            <Typography
-                                    component="span"
-                                    variant="h4"
-                                    color="inherit"
-                                    className={classes.imageTitle}
-                                
-                                >
-                                {language.name} 
-                                    <span className={classes.imageMarked} />
-                                </Typography>
-                            </span>
-                        </ButtonBase>
-                    )))
-            }
+                ))}
             </div>
         );
     }

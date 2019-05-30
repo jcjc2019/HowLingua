@@ -7,14 +7,10 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import FormGroup from '@material-ui/core/FormGroup';
-import Select from "@material-ui/core/Select";
-import MenuItem from '@material-ui/core/MenuItem';
 import NativeSelect from "@material-ui/core/NativeSelect";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { withRouter } from 'react-router-dom';
-import Divider from "@material-ui/core/Divider";
-import Grid from "@material-ui/core/Grid";
 
 
 const styles = theme => ({
@@ -69,7 +65,12 @@ class SurveyForm extends React.Component{
         console.log(localStorage)
         console.log(this.state)
         if(this.state.nativeLanguage !== "" && this.state.targetLanguage !== "" && this.state.topic !== ""){
-            this.props.history.push('/main')
+            // this.props.history.push('/main')
+            //if not logged in, already selected topic, link to topics?
+            //to topics: show all topics belong to this language
+            //to languages, show all language
+            //to quizzes, should only show the first quiz, vocabulary quiz is available 
+            this.props.history.push('/quizzes')
         }
     }
 
@@ -150,26 +151,7 @@ class SurveyForm extends React.Component{
                     <Button type="submit" color="primary" variant="contained" size="medium">
                         <Typography variant="h5" color="inherit">Start my journey now!</Typography>
                     </Button>
-                    <p></p>
-                    <Divider/>
-                    <p></p>
-                    {
-                        this.state.targetLanguage !== "" ?
-                        <Grid item>
-                        <Typography variant="subheading" color="inherit" align="left">Already have an account?   
-                            <Button color="secondary" variant="contained" size="medium" onClick={() => this.props.history.push('/login')} style={{marginLeft:"5%"}}s>
-                            <Typography variant="subheading" color="inherit">Login</Typography>
-                            </Button>
-                        </Typography>
-                        </Grid>
-                        :
-                        <Grid item>
-                        </Grid>
 
-
-                    }
-
- 
                 </FormGroup> 
             </form>  
         )

@@ -1,18 +1,9 @@
 import React from 'react';
 import { withStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
-import classnames from "classnames";
-import { NavLink, withRouter, Route } from 'react-router-dom';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import Divider from "@material-ui/core/Divider";
-import Slide from '@material-ui/core/Slide';
-import Paper from '@material-ui/core/Paper';
+import { withRouter } from 'react-router-dom';
 import SingleTopicCard from '../Components/SingleTopicCard';
+import SocketHandler from '../SocketHandler';
 
 //change this after deployment
 const expressUrl = "http://localhost:3001"
@@ -34,7 +25,7 @@ const styles = theme => ({
         marginBottom: 12,
     },
 });
-
+//TODO: FIX USERTOPICS
 class TopicContainer extends React.Component {
 
     state={
@@ -42,27 +33,43 @@ class TopicContainer extends React.Component {
         userTopics: [],
     }
 
+    constructor() {
+        super()
+        SocketHandler.connect(localStorage.getItem("token"));
+    }
+
     componentDidMount() {
-        console.log(this.props.location.props)
-        fetch(`${expressUrl}/topics`)
-            .then(res => res.json())
-            .then(allTopics => {
-                if (this.props.location.props === undefined){
-                    this.setState({...this.state,allTopics: allTopics})
-                }else{
-                    this.setState({ ...this.state, allTopics: this.props.location.props.languageTopics })
-                }
-
+        //get all topics if not signed in
+        if (localStorage.getItem("userid") === null){
+            fetch(`${expressUrl}/topics`)
+                .then(res => res.json())
+                .then(allTopics => {
+                    //not directed from languages, so props is undefined
+                    if (this.props.location.props === undefined) {
+                        this.setState({
+                            ...this.state,
+                            allTopics: allTopics
+                        })
+                    } else {
+                        //directed from languages, props has topics belong to this language
+                        this.setState({
+                            ...this.state,
+                            allTopics: this.props.location.props.languageTopics,
+                        })
+                    }
+                })
+        }else{
+            //socket to get user's topics
+            SocketHandler.emit("FindUserTopics", {
+                id: localStorage.getItem("userid")
             })
-
-        fetch(`${expressUrl}/users/${localStorage.userid}/topics`)
-            .then(res => res.json())
-            .then(userTopics => {
+            SocketHandler.on("UserTopicsFound", data => {
                 this.setState({
                     ...this.state,
-                    userTopics: userTopics
+                    allTopics: data
                 })
             })
+        }
 
     }
 
@@ -71,18 +78,14 @@ class TopicContainer extends React.Component {
 
         return(
             <div className={classes.root}>
-            {localStorage.getItem('userid') === null ?
-            (this.state.allTopics.map( topic =>
-                (
-                    <SingleTopicCard topic={topic}/>
-                ) 
-            ))
-            :
-            (this.state.userTopics.map( topic =>
-                (
-                    <SingleTopicCard topic={topic} />
-                )                
-            ))}
+            {this.state.allTopics.map( (topic, i) =>
+                
+                    <SingleTopicCard 
+                    topic={topic} 
+                    key={i+1}
+                    />
+                
+            )}
         </div>
         )
     }

@@ -2,16 +2,15 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import NavDrawer from './Containers/NavDrawer';
 import WelcomeContainer from './Containers/WelcomeContainer';
-
+import LanguageContainer from './Containers/LanguageContainer';
 export default class App extends React.Component {
 
   render(){
-    //NEED TO REWRITE ROUTES HERE.
 
     return (
       <BrowserRouter>
       <Switch>
-            <Route exact path="/" render={() =>
+            <Route path="/" render={() =>
               (localStorage.length !== 0 &&
                 localStorage.getItem('nativeLanguage') !== "" &&
                 localStorage.getItem('topic') !== "" &&
@@ -26,7 +25,6 @@ export default class App extends React.Component {
               <NavDrawer /> : <WelcomeContainer /> } />
           
             <Route path="/" component={NavDrawer} />
-
       </Switch>
       </BrowserRouter>
     )

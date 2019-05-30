@@ -10,6 +10,7 @@ const UserLanguage = require('./models/UserLanguage');
 const Topic = require('./models/Topic');
 const LanguageTopic = require('./models/LanguageTopic')
 const UserTopic= require('./models/UserTopic');
+const Vocabulary = require('./models/Vocabulary');
 const Quiz = require('./models/Quiz');
 const Question = require('./models/Question');
 const textToSpeech = require('./textToSpeech')
@@ -33,124 +34,158 @@ io.on("connection", socket => {
     if (socket.handshake.headers.authorization) {
         let [type, token] = socket.handshake.headers.authorization.split(" ");
         let result = jwt.decode(token);
-        // let userId = result.id;
+        //put socket listeners available to registered users here.
+
+        // socket.on("users.update", async params => {
+        //     let user = await User.findByPk(params.id);
+        //     await user.update(params);
+        //     let users = await User.findAll();
+        //     io.emit("users.updated", users);
+        // });
+
+        socket.on("user.update", async params => {
+            let user = await User.findByPk(params.id);
+            await user.update(params);
+            io.emit("user.updated", user);
+        });
+
+        socket.on("user.delete", async payload => {
+            let user = await User.findByPk(payload.user_id);
+            await user.destroy();
+            io.emit("user.deleted", user);
+        });
+
+        //find all languages belong to the user
+        socket.on("userLanguages.index", async searchQuery => {
+            let current_user = await User.findOne({where:{ id: searchQuery.id }});
+            let userLanguages = await current_user.getLanguages();
+            console.log(userLanguages)
+            io.emit("userLanguages.found", userLanguages);
+        });
+
+        // socket.on("userLanguages.update", async params => {
+        //     let userLanguage = await UserLanguage.findByPk(params.id);
+        //     await userLanguage.update(params);
+
+        //     let userLanguages = await UserLanguage.findAll();
+        //     io.emit("userLanguages.updated", userLanguages);
+        // });
+
+        //text to speech socket connection
+        socket.on('text.toSpeech', async vocabulary => {
+            await textToSpeech(vocabulary.text, vocabulary.language)
+            io.emit("tts.finished", { url: `http://localhost:3001/public/${vocabulary.text}_output.wav`})
+        })
+
+        //find topics belong to a language
+        socket.on("FindTopicDetails", async searchQuery => {
+            let language = await Language.findOne({
+                where: { name: searchQuery.language }
+            })
+            let topicDetails = await LanguageTopic.findOne({
+                where: {
+                    languageId: language.id,
+                    topicId: searchQuery.topicId
+                }
+            })
+            console.log("boops")
+            console.log(searchQuery.topicId, language.id);
+            console.log(topicDetails)
+            io.emit("TopicDetailsFound", topicDetails)
+        })
+
+        //find quizzes belong to a topic of a specific language
+        socket.on("FindQuizzes", async searchQuery => {
+            let language = await Language.findOne({
+                where: { name: searchQuery.language }
+            })
+            let quizzes = await Quiz.findAll({
+                where: {
+                    languageId: language.id,
+                    topicId: searchQuery.topicId
+                }
+            })
+            //send quizzes back to front end
+            io.emit("QuizzesFound", quizzes)
+        })
+
+        //find all questions belong to a quiz
+        socket.on("FindQuestions", async searchQuery => {
+            let quizId = searchQuery.quizId
+            let current_quiz = await Quiz.findOne({ where: { id: quizId } })
+            let questions = await current_quiz.getQuestions()
+            console.log(questions)
+            //send question data back to front-end
+            io.emit("QuestionsFound", questions)
+        })
+
+        //signed in users, find all vocabulary belong to a topic
+        //put vocabulary on QuizContainer, pass to SingleQuizCard
+        socket.on("FindVocabularyForThisTopic", async searchQuery => {
+            let topicId = searchQuery.topicId
+            let currentLanguage = await Language.findOne({
+                where: {
+                    name: searchQuery.language
+                }
+            })
+            let vocabularyForCurrentTopic = await Vocabulary.findAll({
+                where: {
+                    topicId: topicId,
+                    languageId: currentLanguage.id
+                }
+            })
+            console.log(vocabularyForCurrentTopic)
+            io.emit("VocabularyFound", vocabularyForCurrentTopic)
+        })
+
+        //signed in users, find all topics belong to this user
+        socket.on("FindUserTopics", async searchQuery => {
+            let currentUser = await User.findOne({
+                where: {
+                    id: searchQuery.id
+                }
+            })
+            let userTopics = await currentUser.getTopics()
+            console.log(userTopics)
+            io.emit("UserTopicsFound", userTopics)
+        })
+
+        //signed in users, add new language and topic
+        socket.on('addLanguageAndTopic', async searchQuery => {
+            let currentUser = await User.findOne({
+                where: {
+                    id: searchQuery.userid
+                }
+            })
+            let language = await Language.findOne({
+                where: {
+                    name: searchQuery.language
+                }
+            })
+            let topic = await Topic.findOne({
+                where: {
+                    category: searchQuery.topic
+                }
+            })
+            language.addUser(currentUser.id)
+            topic.addUser(currentUser.id)
+        })
+
     } else {
         console.log(
             "\x1b[31m",
-            "Not authorized user. Socket connection disconnected."
+            "Not authorized user. Only a few available"
         );
-        socket.disconnect(true);
+        //socket.disconnect(true);
+        //text to speech socket connection
+        socket.on('text.toSpeech', async vocabulary => {
+            await textToSpeech(vocabulary.text, vocabulary.language)
+            io.emit("tts.finished", { url: `http://localhost:3001/public/${vocabulary.text}_output.wav` })
+        })
     }
 
-    //socket connections for user model
-    socket.on("users.index", respond => {
-        User.findAll().then(users => {
-            respond(users);
-        });
-    });
-
-    socket.on("users.update", async params => {
-        let user = await User.findByPk(params.id);
-        await user.update(params);
-        let users = await User.findAll();
-        io.emit("users.updated", users);
-    });
-
-    socket.on("user.update", async params => {
-        let user = await User.findByPk(params.id);
-        await user.update(params);
-        io.emit("user.updated", user);
-    });
-
-    socket.on("user.delete", async payload => {
-        let user = await User.findByPk(payload.user_id);
-        await user.destroy();
-        io.emit("user.deleted", user);
-    });
-
-    //socket connections for language model
-    socket.on("languages.index", respond => {
-        User.findAll().then(languages => {
-            respond(languages);
-        });
-    });
-
-    //find all languages belong to the user
-    socket.on("userLanguages.index", async params => {
-        let current_user = await User.findOne({id: params.id});
-        let userLanguages = await current_user.getLanguages();
-        console.log(userLanguages)
-        io.emit("userLanguages.found", userLanguages);
-    });
-
-    socket.on("userLanguages.update", async params => {
-        let userLanguage = await UserLanguage.findByPk(params.id);
-        await userLanguage.update(params);
-
-        let userLanguages = await UserLanguage.findAll();
-        io.emit("userLanguages.updated", userLanguages);
-    });
-
-    //text to speech socket connection
-    socket.on('text.toSpeech', (text_pinyin, respond) => {
-        socket.emit("tts.finished", {url: textToSpeech(text_pinyin.text)})
-    })
-
-    //socket connections for topic model
-    socket.on("topics.index", respond => {
-        User.findAll().then(topics => {
-            respond(topics);
-        });
-    });
-
-    //find all topics belong to the user
-    socket.on("userTopics.index", respond => {
-        UserTopic.findAll().then(userTopics => {
-            respond(userTopics);
-        });
-    });
-
-    socket.on("userTopics.update", async params => {
-        let userTopic = await UserTopic.findByPk(params.id);
-        await userTopic.update(params);
-
-        let userTopics = await UserTopic.findAll();
-        io.emit("userTopics.updated", userTopics);
-    });
-
-    //find topics belong to a language
-    socket.on("FindTopicDetails", async searchQuery => {
-        let language = await Language.findOne({
-            where: {name: searchQuery.language}
-        })
-        let topicDetails = await LanguageTopic.findOne({
-        where: {
-            languageId: language.id,
-            topicId: searchQuery.topicId
-        }})
-        // console.log(topicDetails);
-        io.emit("TopicDetailsFound", topicDetails)
-    })
-
-    //find quizzes belong to a topic of a specific language
-    socket.on("FindQuizzes", async searchQuery => {
-        let language = await Language.findOne({
-            where: { name: searchQuery.language }
-        })
-        let topic = await Topic.findOne({
-            where: { name: searchQuery.topic }
-        })
-        let quizzes = await Quiz.findAll({
-            where: {
-                languageId: language.id,
-                topicId: topic.id
-            }
-        })
-        console.log(quizzes)
-        //send quizzes back to front end
-        io.emit("QuizzesFound", quizzes)
-    })
 });
+
 
 
 //EXPRESS: npm packages
@@ -190,7 +225,7 @@ app.get("/users", (req, res) => {
     });
 });
 
-app.post("/users", (req, res) => {
+app.post("/users", async (req, res) => {
     //create new user
     let newUser = User.build();
     //set up properties
@@ -198,14 +233,18 @@ app.post("/users", (req, res) => {
     newUser.email = req.body.email;
     newUser.password = req.body.password;
     newUser.points = req.body.points;
-    newUser.currentLanguage_id = req.body.currentLanguage_id
-    newUser.currentTopic_id = req.body.currentTopic_id
+    newUser.currentLanguage = req.body.currentLanguage
+    newUser.currentTopic = req.body.currentTopic
     newUser.avatar = req.body.avatar
     //save newUser to database
     newUser.save().then(newUser =>
         // console.log(newUser);
         res.json(newUser)
     );
+    let currentLanguage = await Language.findOne({ where: { name: newUser.currentLanguage}})
+    let currentTopic = await Topic.findAll({where: {category: newUser.currentTopic}})
+    newUser.addLanguage(currentLanguage, { through: { role: 'learner' } })
+    newUser.addTopic(currentTopic, { through: { role: 'learner' } } )
 });
 
 app.get("/users/:id", (req, res) => {
@@ -293,6 +332,58 @@ app.post("/topics", (req, res) => {
             res.status(200);
         });
 });
+
+//http methods for vocabulary model, API
+app.get("/vocabularies", (req, res) => {
+    Vocabulary.findAll().then(vocabularies => {
+        res.json(vocabularies);
+    });
+});
+
+app.get("/vocabularies/:id", (req, res) => {
+    Vocabulary.findByPk(req.params.id).then(vocabulary => {
+        res.json(vocabulary);
+    });
+});
+
+app.post("/vocabularyGroup", async (req, res) => {
+    let currentLanguage = await Language.findOne({
+        where: {
+            name: req.body.currentLanguage
+        }
+    })
+    Vocabulary.findAll({
+        where:
+        {
+            topicId: req.body.topicId,
+            languageId: currentLanguage.id
+        }
+    }).then(vocabularyGroup => {
+        res.json(vocabularyGroup)
+    })
+})
+
+app.post("/vocabularyForUnSignedIn", async (req, res) => {
+    let currentLanguage = await Language.findOne({
+        where: {
+            name: req.body.currentLanguage
+        }
+    })
+    let currentTopic = await Topic.findOne({
+        where: {
+            category: req.body.currentTopic
+        }
+    })
+    Vocabulary.findAll({
+        where:
+        {
+            topicId: currentTopic.id,
+            languageId: currentLanguage.id
+        }
+    }).then(vocabularyGroup => {
+        res.json(vocabularyGroup)
+    })
+})
 
 //http methods for quiz model, API
 app.get("/quizzes", (req, res) => {
@@ -385,12 +476,12 @@ app.get("/userTopics", (req, res) => {
     });
 });
 
-//show specific user's topics
-app.get("/users/:id/topics", (req, res) => {
-    User.findByPk(req.params.id).then(user => {
-        user.getTopics().then(topics => res.json(topics));
-    });
-})
+
+// app.get("/users/:id/topics", (req, res) => {
+//     User.findByPk(req.params.id).then(user => {
+//         user.getTopics().then(topics => res.json(topics));
+//     });
+// })
 
 //show specific topic's user
 app.get("/topics/:id/users", (req, res) => {

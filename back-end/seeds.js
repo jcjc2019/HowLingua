@@ -7,6 +7,7 @@ const LanguageTopic = require('./models/LanguageTopic')
 const UserTopic = require('./models/UserTopic');
 const Quiz = require('./models/Quiz');
 const Question = require('./models/Question');
+const Vocabulary = require('./models/Vocabulary');
 
 //use faker for fake user data
 const faker = require('faker');
@@ -288,14 +289,14 @@ const languageTopics = [
     {
         languageId: 1,
         topicId: 1,
-        details: `There are many ways of greeting others in Mandarin Chinese. The most commonly used word for "Hello!" is 你好！(Nǐ hǎo). It is widely used everywhere. Another commonly used word is 吃了吗？(Chī le ma). Its literal meaning is "Did you eat?" or "Have you eaten anything?". This is commonly used between people in the Northern part of China or between close friends. In addition, other commonly used words include 早上好！(Zǎo shàng hǎo), meaning "Good morning!" One would hear this word when s/he enters a restaurant or hotel in the morning, where the host or hostess will greets you by saying 早上好！. Of course, other similar expressions include 下午好！(Good afternoon!) and 晚上好！(Good evening!)`,
+        details: `There are many ways of greeting others in Mandarin Chinese. The most commonly used word for "Hello!" is 你好！(Nǐ hǎo). It is used almost everywhere. Another commonly used word is 吃了吗？(Chī le ma). Its literal meaning is "Did you eat?" or "Have you eaten anything?". This is commonly used in the Northern part of China or between close friends. In addition, other commonly used words include 早上好！(Zǎo shàng hǎo), meaning "Good morning!" One would hear this word when s/he enters a restaurant or hotel in the morning, where the host or hostess greets you by saying 早上好！. Other similar expressions include 下午好！(Good afternoon!) and 晚上好！(Good evening!)`,
         vocabulary: "你好 (Nǐ hǎo);吃了吗 (Chī le ma);早上好 (Zǎo shàng hǎo);下午好 (Xià wǔ hǎo);晚上好 (Wǎn shàng hǎo)"
     },
     {
         languageId: 1,
         topicId: 2,
-        details: `The way of saying goodbye to each other varies from people to pople. The most commonly used express is 再见（Zài jiàn）！. It can be used anywhere, either between familiar friends or people who meet each other for the first time. Sometimes, close friends or young people tend to use 拜拜（Bái bái）！, whose sound is close to the English word "Byebye!". Young people tend to use internet languages when texting each other, and therefore the ways of saying goodbye vary greatly. Since the Mandarin prounication of the number 88() is close to 拜拜, a commonly used phrase by netizens is 886（bā bā liù）! or 88（bā bā）!. The former resembles 拜拜了（Bái bái le）！while the latter resembles 拜拜！They are both used in text messages or online chatrooms.`,
-        vocabulary: "再见 (Zài jiàn);拜拜 (Bái bái);了 (le); 八 (bā)",
+        details: `The way of saying goodbye to each other varies from people to people. The most commonly used phrase is 再见（Zài jiàn）！. It can be used either between family members, close friends or people who meet for the first time. Close friends also tend to use 拜拜（Bái bái）！-- a transliteration of the English word "Byebye." Recently, netizens would use internet languages such as 88 instead of 再见. The Mandarin pronunciation of the number 88() is close to 拜拜, so netizens would use 886（bā bā liù）or 88（bā bā）to say farewell to each other. The former resembles 拜拜了（Bái bái le）！while the latter resembles 拜拜！They are both used in text messages or online chatroom.`,
+        vocabulary: "再见 (Zài jiàn);拜拜 (Bái bái);了 (le); 8 (bā)",
     },
     {
         languageId: 1,
@@ -354,14 +355,14 @@ const languageTopics = [
     {
         languageId: 2,
         topicId: 1,
-        details: "More to come...",
-        vocabulary: "More to come...",
+        details: "There are many ways of greeting people in Japanese. In the morning, you can say おはようございます!(Good morning!) to people who is senior than you. A less respect form used between friends or family members is おはよう!(Good morning, informal). In the afternoon, one can say こんにちは!(Good afternoon!), which is also used as a translation for 'Hello.' In the evening, one can say こんばんは!(Good evening!). Before going to sleep, it is better to say おやすみ!(Good night) to your loved ones. But when you pick up the phone, the first word you use should be もしもし, a greeting word used only for phone conversations.",
+        vocabulary: "おはようございます(Ohayō gozaimasu);こんにちは(Konnichiwa);こんばんは(Konbanwa);もしもし(Moshi moshi);おやすみ(Oyasumi)"
     },
     {
         languageId: 2,
         topicId: 2,
-        details: "More to come...",
-        vocabulary: "More to come...",
+        details: "Like other greeting words, there are many ways of saying goodbye. The most commonly used word is さようなら!(Goodbye!), which can be used anywhere. But close friends will use じゃあね!(Bye!), a very informal way to say goodbye. バイバイ!(Byebye!) is also very often used between close friends. A very formal way of saying goodbye to people in a formal occasion would be  おさきにしつれいします, whose literal meaning is 'Excuse me for leaving first'.",
+        vocabulary: "じゃあね(jaa ne);さようなら(Sayounara);バイバイ(bai bai);おさきにしつれいします(osaki ni shitsurei shimasu)",
     },
     {
         languageId: 2,
@@ -419,7 +420,127 @@ const languageTopics = [
     },
     {
         languageId: 3,
+        topicId: 1,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 3,
+        topicId: 2,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 3,
+        topicId: 3,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 3,
+        topicId: 4,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 3,
+        topicId: 5,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 3,
+        topicId: 6,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 3,
+        topicId: 7,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 3,
+        topicId: 8,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 3,
+        topicId: 9,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 3,
+        topicId: 10,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 3,
         topicId: 11,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 4,
+        topicId: 1,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 4,
+        topicId: 2,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 4,
+        topicId: 3,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 4,
+        topicId: 4,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 4,
+        topicId: 5,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 4,
+        topicId: 6,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 4,
+        topicId: 7,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 4,
+        topicId: 8,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 4,
+        topicId: 9,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 4,
+        topicId: 10,
         details: "More to come...",
         vocabulary: "More to come...",
     },
@@ -431,7 +552,127 @@ const languageTopics = [
     },
     {
         languageId: 5,
+        topicId: 1,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 5,
+        topicId: 2,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 5,
+        topicId: 3,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 5,
+        topicId: 4,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 5,
+        topicId: 5,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 5,
+        topicId: 6,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 5,
+        topicId: 7,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 5,
+        topicId: 8,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 5,
+        topicId: 9,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 5,
+        topicId: 10,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 5,
         topicId: 11,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 6,
+        topicId: 1,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 6,
+        topicId: 2,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 6,
+        topicId: 3,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 6,
+        topicId: 4,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 6,
+        topicId: 5,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 6,
+        topicId: 6,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 6,
+        topicId: 7,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 6,
+        topicId: 8,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 6,
+        topicId: 9,
+        details: "More to come...",
+        vocabulary: "More to come...",
+    },
+    {
+        languageId: 6,
+        topicId: 10,
         details: "More to come...",
         vocabulary: "More to come...",
     },
@@ -443,6 +684,175 @@ const languageTopics = [
     },
 ];
 languageTopics.forEach(languageTopic => LanguageTopic.create(languageTopic));
+
+//vocabularies
+const vocabularies = [
+    {
+        character: "你好",
+        transliteration: "Nǐ hǎo",
+        meaning: "Hello",
+        languageId: 1,
+        topicId: 1
+    },
+    {
+        character: "好",
+        transliteration: "hǎo",
+        meaning: "good",
+        languageId: 1,
+        topicId: 1
+    },
+    {
+        character: "吃",
+        transliteration: "chī",
+        meaning: "eat",
+        languageId: 1,
+        topicId: 1
+    },
+    {
+        character: "早上",
+        transliteration: "Zǎo shàng",
+        meaning: "morning",
+        languageId: 1,
+        topicId: 1
+    },
+    {
+        character: "下午",
+        transliteration: "Xià wǔ",
+        meaning: "afternoon",
+        languageId: 1,
+        topicId: 1
+    },
+    {
+        character: "晚上",
+        transliteration: "Wǎn shàng",
+        meaning: "evening",
+        languageId: 1,
+        topicId: 1
+    },
+    {
+        character: "吃了吗",
+        transliteration: "Chī le ma",
+        meaning: "Did you eat? Have you eaten yet?",
+        languageId: 1,
+        topicId: 1
+    },
+    {
+        character: "早上好",
+        transliteration: "Zǎo shàng hǎo",
+        meaning: "Good morning!",
+        languageId: 1,
+        topicId: 1
+    },
+    {
+        character: "下午好",
+        transliteration: "Xià wǔ hǎo",
+        meaning: "Good afternoon!",
+        languageId: 1,
+        topicId: 1
+    },
+    {
+        character: "晚上好",
+        transliteration: "Wǎn shàng hǎo",
+        meaning: "Good evening!",
+        languageId: 1,
+        topicId: 1
+    },
+    {
+        character: "再见",
+        transliteration: "Zài jiàn",
+        meaning: "Goodbye!",
+        languageId: 1,
+        topicId: 2
+    },
+    {
+        character: "拜拜",
+        transliteration: "Bái bái",
+        meaning: "Byebye!",
+        languageId: 1,
+        topicId: 2
+    },
+    {
+        character: "8",
+        transliteration: "bā",
+        meaning: "eight",
+        languageId: 1,
+        topicId: 2
+    },
+    {
+        character: "6",
+        transliteration: "liù",
+        meaning: "six",
+        languageId: 1,
+        topicId: 2
+    },
+    {
+        character: "おはようございます",
+        transliteration: "Ohayō gozaimasu",
+        meaning: "Good morning!",
+        languageId: 2,
+        topicId: 1
+    },
+    {
+        character: "こんにちは",
+        transliteration: "Konnichiwa",
+        meaning: "Hello. Good afternoon!",
+        languageId: 2,
+        topicId: 1
+    },
+    {
+        character: "こんばんは",
+        transliteration: "Konbanwa",
+        meaning: "Good evening!",
+        languageId: 2,
+        topicId: 1
+    },
+    {
+        character: "もしもし",
+        transliteration: "Moshi moshi",
+        meaning: "Hello? (greeting on the phone)",
+        languageId: 2,
+        topicId: 1
+    },
+    {
+        character: "おやすみ",
+        transliteration: "Oyasumi",
+        meaning: "Good night!",
+        languageId: 2,
+        topicId: 1
+    },
+    {
+        character: "じゃあね",
+        transliteration: "jaa ne",
+        meaning: "See you! (informal way of saying goodbye)",
+        languageId: 2,
+        topicId: 2
+    },
+    {
+        character: "さようなら",
+        transliteration: "Sayounara",
+        meaning: "Goodbye!",
+        languageId: 2,
+        topicId: 2
+    },
+    {
+        character: "バイバイ",
+        transliteration: "bai bai",
+        meaning: "Byebye! (informal way of saying farewell between close friends)",
+        languageId: 2,
+        topicId: 2
+    },
+    {
+        character: "おさきにしつれいします",
+        transliteration: "osaki ni shitsurei shimasu",
+        meaning: "Excuse me for leaving first. (Very formal)",
+        languageId: 2,
+        topicId: 2
+    },
+]
+
+vocabularies.forEach(vocabulary => Vocabulary.create(vocabulary));
+
+
 
 //quizzes
 const quizzes = [
@@ -566,6 +976,16 @@ const quizzes = [
         languageId: "1",
         topicId: "11",
     },
+    {
+        type: "vocabulary",
+        languageId: "2",
+        topicId: "2",
+    },
+    {
+        type: "culture",
+        languageId: "2",
+        topicId: "2",
+    },
 ]
 
 quizzes.forEach(quiz => Quiz.create(quiz));
@@ -616,24 +1036,24 @@ const questions = [
         quizId: 1
     },
     {
-        question: "Choose the correct pronunciation for 你好.",
+        question: "你好",
         options: "Nǐ hǎo;Nǐ;hǎo",
         answer: "Nǐ hǎo",
-        type: "Pronunciation question",
+        type: "Choose the correct pronunciation",
         quizId: 1
     },
     {
-        question: "Choose the correct pronunciation for 吃了吗.",
+        question: "吃了吗",
         options: "Nǐ hǎo;Chī le ma",
         answer: "Chī le ma",
-        type: "Pronunciation question",
+        type: "Choose the correct pronunciation",
         quizId: 1
     },
     {
-        question: "Choose the correct pronunciation for 早上好.",
+        question: "早上好",
         options: "Chī le ma;Zǎo shàng hǎo",
         answer: "Zǎo shàng hǎo",
-        type: "Pronunciation question",
+        type: "Choose the correct pronunciation",
         quizId: 1
     },
     {
@@ -655,26 +1075,62 @@ const questions = [
         quizId: 1
     },
     {
+        question: "Listen and Repeat. 下午好",
+        answer: "下午好",
+        type: "Practice question",
+        quizId: 1
+    },
+    {
+        question: "Listen and Repeat. 晚上好",
+        answer: "晚上好",
+        type: "Practice question",
+        quizId: 1
+    },
+    {
         question: "You meet a new friend for the first time, what do you say?",
         options: "你好！（Hello）;吃了吗？(Did you eat)",
         answer: "你好！（Hello）",
-        type: "Context question",
+        type: "Choose the correct answer.",
         quizId: 2
     },
     {
         question: "What's the greeting word used between close friends in the Northern part of China?",
         options: "你好！（Hello）;吃了吗？(Did you eat)",        
         answer: "吃了吗(Did you eat)？",        
-        type: "Context question",
+        type: "Choose the correct answer.",
         quizId: 2
     },
     {
         question: "What's the greeting word used by the waitress when you walk into a restaurant in the morning?",
         options: "你好！（Hello）;吃了吗？(Did you eat);早上好！（Good morning!）",
         answer: "早上好！（Good morning!）",
-        type: "Context question",
+        type: "Choose the correct answer.",
         quizId: 2
-    }
+    },
+    {
+        question: "Listen and Repeat. 再见",
+        answer: "再见",
+        type: "Practice question",
+        quizId: 5
+    },
+    {
+        question: "Listen and Repeat. 拜拜",
+        answer: "拜拜",
+        type: "Practice question",
+        quizId: 5
+    },
+    {
+        question: "Listen and Repeat. 了",
+        answer: "了",
+        type: "Practice question",
+        quizId: 5
+    },
+    {
+        question: "Listen and Repeat. 8",
+        answer: "8",
+        type: "Practice question",
+        quizId: 5
+    },
 ]
 
 questions.forEach(question => Question.create(question));

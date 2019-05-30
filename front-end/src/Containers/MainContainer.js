@@ -1,12 +1,16 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import LanguageContainer from "./LanguageContainer";
-import LoginContainer from '../Containers/LoginContainer';
-import SignupContainer from '../Containers/SignupContainer';
+import LoginContainer from './LoginContainer';
+import SignupContainer from './SignupContainer';
 import SingleLanguageCard from '../Components/SingleLanguageCard';
 import TopicContainer from '../Containers/TopicContainer';
-import QuizContainer from '../Containers/QuizContainer';
-import SingleQuizCard from '../Components/SingleQuizCard';
+import QuizContainer from './QuizContainer';
+import SingleQuizContainer from './SingleQuizContainer';
+import Settings from '../Components/Settings';
+import QuizResult from './QuizResult';
+import LeaderBoard from '../Components/LeaderBoard';
+import About from '../Containers/About';
 export default class MainContainer extends React.Component {
 
     render() {
@@ -17,11 +21,15 @@ export default class MainContainer extends React.Component {
                 <Route exact path="/languages/:id" component={SingleLanguageCard}></Route>
 
                 <Route exact path="/topics" component={TopicContainer} ></Route>
-                <Route exact path="/quizzes" component={QuizContainer} ></Route>
-                <Route exact path="/quizzes/:id" component={SingleQuizCard}></Route>
-
+                <Route exact path="/quizzes" component={QuizContainer} ></Route>            
+                <Route exact path="/quizzes/:id" component={SingleQuizContainer}></Route>
+                <Route exact path="/result" component={QuizResult}></Route>
                 <Route exact path="/login" component={LoginContainer}></Route>
                 <Route exact path="/signup" component={SignupContainer}></Route>
+                <Route exact path="/settings" component={Settings}></Route>
+                <Route exact path="/leaderboard" component={LeaderBoard}></Route>
+                <Route exact path="/about" component={About}></Route>
+                <Route exact path="/" render={ () => <Redirect to="/about" />} />
             </React.Fragment>
         )
     }

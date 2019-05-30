@@ -1,15 +1,13 @@
 import React from 'react';
 import { withStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
-import classnames from "classnames";
-import { NavLink, withRouter, Route } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import Divider from "@material-ui/core/Divider";
 import Slide from '@material-ui/core/Slide';
 import Paper from '@material-ui/core/Paper';
 import SocketHandler from "../SocketHandler";
@@ -39,8 +37,6 @@ const styles = theme => ({
     paper: {
         padding: theme.spacing.unit * 2,
         color: theme.palette.text.secondary,
-        // maxWidth: 420,
-        // marginTop: '5%'
     },
 });
 
@@ -56,11 +52,13 @@ class TopicContainer extends React.Component {
         showDetails: false,
         details: "",
         availableLanguages: [],
-        vocabulary: []
+        vocabulary: [],
+        allClicked: []
     }
 
     componentDidMount=()=> {
-        fetch(`http://localhost:3001/topics/${this.props.topic.id}/languages`)
+        let id = this.props.topic.id
+        fetch(`http://localhost:3001/topics/${id}/languages`)
         .then(res => res.json())
         .then(languages=>{
             this.setState({
@@ -70,38 +68,88 @@ class TopicContainer extends React.Component {
         })
     }
 
-    showDetails = () => {
+    setLanguage =(name, id) => {
+        //change language per user's choice, should happen before fetch topic details
+        localStorage.setItem('foreignLanguage', name)
+        //invoke getDetails and 
+        this.showTopicDetails(id)
+    }
+
+    getTopicDetails = (id)=> {
+        if(id === this.props.topic.id){
+            //get topic details from backend
+            SocketHandler.emit('FindTopicDetails', { 
+                language: localStorage.getItem("foreignLanguage"), 
+                topicId: id
+            });
+            SocketHandler.on("TopicDetailsFound", data => {
+                console.log(data)
+                if (data.topicId === id) {
+                    this.setState({
+                        ...this.state,
+                        details: data.details,
+                    })
+                } else {
+                    return data
+                }
+            })
+            //fetch vocabulary for each topic
+            //use topic id to remember which card is clicked
+            fetch(`${expressUrl}/vocabularyGroup`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    //use this.setLanguage to change current language.
+                    currentLanguage: localStorage.getItem("foreignLanguage"),
+                    topicId: this.props.topic.id
+                })
+            })
+            .then(res => res.json())
+            .then(vocabularyGroup => 
+                
+                this.setState({
+                    ...this.state,
+                    vocabulary: vocabularyGroup
+                })
+            )
+        }
+    }
+
+    showTopicDetails = (id) => {
+        this.getTopicDetails(id)
         this.setState(
             {
-                ...this.state,
-                showDetails: !this.state.showDetails            
-            }
-        )
-        //get language
-        const {myKey} = this.props.match.params
-
-        SocketHandler.emit('FindTopicDetails', { language: localStorage.getItem("foreignLanguage"), topicId: this.props.topic.id });
-        SocketHandler.on("TopicDetailsFound", data => (
-            this.setState({
-                ...this.state, 
-                details: data.details,
-                vocabulary: data.vocabulary.split(";"),
-            }))
-        )
+               ...this.state,
+                showDetails: !this.state.showDetails
+            })
     }
-    
-    playSound= (vocabulary)=> {
+
+    startQuiz=(id) => {
+        localStorage.setItem('topicId', `${id}`)
+        this.props.history.push({
+            pathname: `/quizzes`
+        })
+    }
+  
+    playSound= (character)=> {
         let speaker = new window.SpeechSynthesisUtterance();
-        speaker.lang = 'zh-TW';
-        speaker.text = `${vocabulary}`;
+        //add more languages later
+        //use this.setLanguage to get the current language
+        if (localStorage.getItem('foreignLanguage') === "Mandarin"){
+            speaker.lang = 'zh-TW';
+        }else if(localStorage.getItem('foreignLanguage') === "Japanese"){
+            speaker.lang = 'ja-JP';
+        }
+        speaker.text = `${character}`;
         speechSynthesis.speak(speaker);
     }
 
     render() {
-        console.log(this.state)
+        console.log(this.props)
         const { classes } = this.props;
         const bull = <span className={classes.bullet}>•</span>;
-
         return (
             <Grid container spacing={24}>
                 <Grid item xs={4}>
@@ -118,16 +166,25 @@ class TopicContainer extends React.Component {
                                 Category: {this.props.topic.category}
                             </Typography>
                             <Typography variant="body2" component="p">
-                                You are learning this topic in {localStorage.getItem("foreignLanguage")}.
-                            </Typography>
-                            <Typography variant="body2" component="p">
-                                Available Languages: {this.state.availableLanguages.join(", ")}.
-                            </Typography>                        
+                                 Learn more in
+                                {this.state.availableLanguages.map((language, i) =>
+                                    <li>
+                                    <Button size="small" 
+                                    color="secondary" 
+                                    key={i + 1} 
+                                    onClick={
+                                        (id) => {
+                                            this.setLanguage(language, this.props.topic.id)
+                                        }
+
+                                    }>
+                                        {language}
+                                    </Button>
+                                    </li>
+                                )}
+                            </Typography>            
                         </CardContent>
                         <CardActions>
-                            <Button size="small" color="secondary" onClick={this.showDetails}>
-                                Learn More
-                            </Button>
                         </CardActions>
                     </Card>
                 </Grid>
@@ -159,24 +216,22 @@ class TopicContainer extends React.Component {
                             <Typography variant="h6">
                             New words:
                             </Typography>   
-                                {this.state.vocabulary.map(vocabulary =>
-                                    <Typography variant="body1">
-                                        {vocabulary}    
+                                {this.state.vocabulary.map((vocabulary,i) =>
+                                    <Typography variant="body1" key={i+1}>
+                                        {vocabulary.character}    
                                         < Hearing onClick ={()=> 
-                                           this.playSound(vocabulary.split("(")[0])                         
+                                           this.playSound(vocabulary.character)                         
                                         }/> 
                                     </Typography>
                                 )}
-                                <Button size="medium" color="primary" variant="contained" onClick={() =>
-                                    this.props.history.push({
-                                        pathname: `/quizzes`,
-                                        props: {
-                                            vocabulary: this.state.vocabulary,
-                                            topic: this.props.topic.name
-                                        }
-                                })}>
+
+                                <Button size="medium" color="primary" variant="contained" 
+                                onClick={(id) =>
+                                  this.startQuiz(this.props.topic.id)
+                                }>
                                 Quiz Time!
-                            </Button>                        
+                                </Button>
+                                                        
                             </Paper>                           
                             )
                         }

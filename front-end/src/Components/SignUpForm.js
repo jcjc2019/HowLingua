@@ -56,15 +56,11 @@ class SignupForm extends React.Component {
         password: "",
         showPassword: false,
         avatar: "",
-        // points: localStorage.getItem('points'),
-        // TODO: a user who sign up after quiz should use the above line for points
-        points: 0,
-        currentTopic: "",
-        // currentTopic: localStorage.getItem('topic'),
-        // TODO: a user who sign up after finishing a topic should use the above line for topic
-        currentLanguage: "",
-        // currentTopic: localStorage.getItem('foreignLanguage'),
-        // TODO: a user who sign up after finishing a topic should use the above line for language
+        //after survey form in welcome screen, already set points to 0
+        //use unregistered user's current points
+        points: localStorage.getItem("points"),
+        currentTopic: localStorage.getItem('topic'),
+        currentLanguage: localStorage.getItem('foreignLanguage'),
     };
 
     handleChange = name => event => {
@@ -128,9 +124,10 @@ class SignupForm extends React.Component {
             localStorage.setItem("userid", user.id);
             localStorage.setItem("username", user.username);
             localStorage.setItem("token", user.token);
+            localStorage.setItem('avatar', user.avatar)
             console.log(localStorage);
             //show Drawer page 
-            this.props.history.push('/main')
+            this.props.history.push('/languages')
         })
     }
     render() {

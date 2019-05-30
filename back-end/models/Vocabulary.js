@@ -3,11 +3,8 @@
 //use sequelize package
 const Sequelize = require('sequelize');
 
-const Vocabulary = require("./Vocabulary")
-
 //use sqlite database
 const sequelize = new Sequelize({
-    //use sqlite database
     dialect: 'sqlite',
     storage: './database.sqlite'
 });
@@ -15,26 +12,23 @@ const sequelize = new Sequelize({
 //data type for table of this model
 const Model = Sequelize.Model;
 
-class Language extends Model { }
-Language.init({
-    name: {
+class Vocabulary extends Model { }
+Vocabulary.init({
+    character: {
         type: Sequelize.STRING,
         allowNull: false
     },
-    introduction: {
-        type: Sequelize.STRING
+    transliteration: {
+        type: Sequelize.STRING,
     },
-    imageURL: {
-        type: Sequelize.STRING
+    meaning: {
+        type: Sequelize.STRING,
     }
 }, {
         sequelize,
-        modelName: 'language'
+        modelName: 'vocabulary'
     })
 
-module.exports = Language
+module.exports = Vocabulary
 
 sequelize.sync()
-
-//A language has many vocabularies, add LanguageId to vocabulary table
-Language.hasMany(Vocabulary, { as: 'Vocabularies' })

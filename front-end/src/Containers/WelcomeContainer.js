@@ -19,7 +19,7 @@ const styles = theme => ({
         color: theme.palette.text.secondary,
         maxWidth: 420,
         margin: `${theme.spacing.unit}px auto`,
-        marginTop: '5%'
+        marginTop: '10%'
     },
 });
 
@@ -29,7 +29,7 @@ class WelcomeContainer extends React.Component{
         const { classes } = this.props;
 
         return (
-            <div>
+            <div className={classes.root} id="welcome">
             <Paper className={classes.paper} elevation={1}>
                     <Grid 
                     container 
