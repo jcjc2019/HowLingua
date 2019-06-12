@@ -64,13 +64,13 @@ class QuizResult extends React.Component{
 
     renderVideo =()=> {
        //set up videoId here 
-        if(localStorage.getItem('foreignLanguage')== "Mandarin"){
+        if(localStorage.getItem('foreignLanguage')=== "Mandarin"){
             if (localStorage.getItem("topic") === "greetings"){
                 this.setState({ 
                     videoId: "lpWYSLa3qME"
                 })
             } 
-        } else if (localStorage.getItem('foreignLanguage') == "Japanese"){
+        } else if (localStorage.getItem('foreignLanguage') === "Japanese"){
             if (localStorage.getItem("topic") === "greetings") {
                 this.setState({
                     videoId: "pZKtfnx6kNQ"

@@ -58,14 +58,26 @@ class TopicContainer extends React.Component {
 
     componentDidMount=()=> {
         let id = this.props.topic.id
-        fetch(`http://localhost:3001/topics/${id}/languages`)
-        .then(res => res.json())
-        .then(languages=>{
-            this.setState({
-                ...this.state,
-                availableLanguages: languages.map(language => language.name)
+
+        if(localStorage.getItem('userid') === null){
+            fetch(`http://localhost:3001/topics/${id}/languages`)
+                .then(res => res.json())
+                .then(languages => {
+                    this.setState({
+                        ...this.state,
+                        availableLanguages: languages.map(language => language.name)
+                    })
+                })
+        }else{
+            SocketHandler.emit("userLanguages.index", {id: localStorage.getItem('userid')})
+            SocketHandler.on("userLanguages.found", userLanguages => {
+                this.setState({
+                    ...this.state,
+                    availableLanguages: userLanguages.map(language => language.name)
+                })
             })
-        })
+        }
+
     }
 
     setLanguage =(name, id) => {

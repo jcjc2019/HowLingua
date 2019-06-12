@@ -71,6 +71,8 @@ class SurveyForm extends React.Component{
             //to languages, show all language
             //to quizzes, should only show the first quiz, vocabulary quiz is available 
             this.props.history.push('/quizzes')
+            //to about, should only show the about page
+            //this.props.history.push('/about')
         }
     }
 
@@ -140,7 +142,7 @@ class SurveyForm extends React.Component{
                             <option value="" >Select a foreign language</option>
                             <option value={"Mandarin"}>Chinese-Mandarin</option>
                             <option value={"Japanese"}>Japanese</option>
-                            <option value={"Cantonese"}>Chinese-Cantonese(currently unavailbale)</option>
+                            <option value={"Cantonese"}>Chinese-Cantonese(currently unavailable)</option>
                             <option value={"Tamil"}>Tamil(currently unavailable)</option>
                             <option value={"Hebrew"}>Hebrew(currently unavailable)</option>
                             <option value={"More"}>More languages...</option>

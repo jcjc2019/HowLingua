@@ -54,7 +54,7 @@ class About extends React.Component {
                                 Current Features:
                                 <li>Users are able to hear how words sound. Made through Microsoft Speech API.</li>
                                 <li>Users are able to talk to the computer and learn to improve the pronunciation through practices. </li>
-                                <li>Users are able to learn a single topics in different languages.</li>
+                                <li>Users are able to learn a single topic in different languages.</li>
                             </Typography>
                         </Grid>
                         <Grid item xs={12}>

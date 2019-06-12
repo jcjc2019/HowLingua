@@ -296,7 +296,7 @@ const languageTopics = [
         languageId: 1,
         topicId: 2,
         details: `The way of saying goodbye to each other varies from people to people. The most commonly used phrase is 再见（Zài jiàn）！. It can be used either between family members, close friends or people who meet for the first time. Close friends also tend to use 拜拜（Bái bái）！-- a transliteration of the English word "Byebye." Recently, netizens would use internet languages such as 88 instead of 再见. The Mandarin pronunciation of the number 88() is close to 拜拜, so netizens would use 886（bā bā liù）or 88（bā bā）to say farewell to each other. The former resembles 拜拜了（Bái bái le）！while the latter resembles 拜拜！They are both used in text messages or online chatroom.`,
-        vocabulary: "再见 (Zài jiàn);拜拜 (Bái bái);了 (le); 8 (bā)",
+        vocabulary: "再见 (Zài jiàn);拜拜 (Bái bái);了 (le)",
     },
     {
         languageId: 1,
@@ -361,8 +361,8 @@ const languageTopics = [
     {
         languageId: 2,
         topicId: 2,
-        details: "Like other greeting words, there are many ways of saying goodbye. The most commonly used word is さようなら!(Goodbye!), which can be used anywhere. But close friends will use じゃあね!(Bye!), a very informal way to say goodbye. バイバイ!(Byebye!) is also very often used between close friends. A very formal way of saying goodbye to people in a formal occasion would be  おさきにしつれいします, whose literal meaning is 'Excuse me for leaving first'.",
-        vocabulary: "じゃあね(jaa ne);さようなら(Sayounara);バイバイ(bai bai);おさきにしつれいします(osaki ni shitsurei shimasu)",
+        details: "Like other greeting words, there are many ways of saying goodbye. The most commonly used word is さようなら!(Goodbye!), which can be used anywhere. But close friends will use じゃあね!(Bye!), a very informal way to say goodbye. バイバイ!(Byebye!) is also very often used between close friends. A very formal way of saying goodbye to people in a formal occasion would be お先に失礼します, whose literal meaning is 'Excuse me for leaving first'.",
+        vocabulary: "じゃあね(jaa ne);さようなら(Sayounara);バイバイ(bai bai);お先に失礼します(osaki ni shitsurei shimasu)",
     },
     {
         languageId: 2,
@@ -772,20 +772,6 @@ const vocabularies = [
         topicId: 2
     },
     {
-        character: "8",
-        transliteration: "bā",
-        meaning: "eight",
-        languageId: 1,
-        topicId: 2
-    },
-    {
-        character: "6",
-        transliteration: "liù",
-        meaning: "six",
-        languageId: 1,
-        topicId: 2
-    },
-    {
         character: "おはようございます",
         transliteration: "Ohayō gozaimasu",
         meaning: "Good morning!",
@@ -842,7 +828,7 @@ const vocabularies = [
         topicId: 2
     },
     {
-        character: "おさきにしつれいします",
+        character: "お先に失礼します",
         transliteration: "osaki ni shitsurei shimasu",
         meaning: "Excuse me for leaving first. (Very formal)",
         languageId: 2,

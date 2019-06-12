@@ -88,9 +88,7 @@ class LoginForm extends React.Component{
             this.props.history.push('/languages')
         })
     }
-        //.then(()=> 
-        //TODO: create link between user and language, between user and topic
-        //)
+
     
     render(){
         const { classes } = this.props;
