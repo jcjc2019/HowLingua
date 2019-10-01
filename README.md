@@ -1,9 +1,9 @@
-# HowLingua:A learner-centered language-learning app.  
+# HowLingua: A learner-centered language-learning app.  
 
 ## Overview
-This app is designed to help learners to study [Less Commonly Taught Languages (or LCTLs)](https://en.wikipedia.org/wiki/Less_Commonly_Taught_Languages). The learning unit is organized by topic. A user can learn how to say "greeting" words in the chosen language immediately. 
+This app is designed to help learners to study [Less Commonly Taught Languages (or LCTLs)](https://en.wikipedia.org/wiki/Less_Commonly_Taught_Languages). The learning unit is primarily organized by topic. A learner can start to learn how to say words in her/his chosen topic and language immediately. 
 
-This app is designed based on a language instructor's multiple years of teaching Mandarin language classes to college students. 
+This app is designed based on a language instructor's multiple years of teaching Mandarin language classes to college students. It is designed to cater to a language learner's needs by presenting words/set phrases for her/his chosen topic immediately.  
 
 Currently only the first topic "greetings" is available for Mandarin and Japanese. Support for more languages will be added in the future.
 
