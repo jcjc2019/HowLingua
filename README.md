@@ -5,7 +5,7 @@ This app is designed to help learners to study [Less Commonly Taught Languages (
 
 This app is designed based on the designer, who has been an instructor with multiple years of teaching Mandarin language classes to college students in the US. The learning curriculum is created by the language instructor herself. It is designed to cater to a language learner's needs by presenting words and phrases for a chosen topic immediately. 
 
-Currently only the first topic "greetings" is available for Mandarin and Japanese. Support for more languages will be added in the future.
+Currently only the first topic "greetings" is available for Mandarin and Japanese. Support for more topics and languages will be added in the future.
 
 ## Version
 - 0.1 (June 15, 2019)
