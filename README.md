@@ -11,8 +11,8 @@ Currently only the first topic "greetings" is available for Mandarin and Japanes
 - 0.1 (June 15, 2019)
 
 ## Features
-- Users are able to hear how foreign words sound. Made possible through [Speech synthesis](https://en.wikipedia.org/wiki/Speech_synthesis) technology.
-- Users are able to talk to the computer and learn to improve the pronunciation through practices. Made possible through [Speech recognition](https://en.wikipedia.org/wiki/Speech_recognition) technology.
+- Users are able to hear how foreign words sound. Made possible through [speech synthesis](https://en.wikipedia.org/wiki/Speech_synthesis) technology.
+- Users are able to talk to the computer and learn to improve the pronunciation through practices. Made possible through [speech recognition](https://en.wikipedia.org/wiki/Speech_recognition) technology.
 - To maximize learning effect, a user cannot continue to learn next new word until s/he gets the pronunciation of the current word recognized by the computer.
 - Users are able to learn a single topic in different languages, without switching to a different interface.
 - Unlogged users can learn how to say words and phrases in the first topic unit “greetings” in both Mandarin and Japanese.
