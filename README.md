@@ -3,7 +3,7 @@
 ## Overview
 This app is designed to help learners to study [Less Commonly Taught Languages (or LCTLs)](https://en.wikipedia.org/wiki/Less_Commonly_Taught_Languages). The learning unit is primarily organized by topic. A learner can start to learn how to say words in her/his chosen topic and language immediately. 
 
-This app is designed based on the designer, who has been an instructor with multiple years of teaching Mandarin language classes to college students in the US. The learning curriculum is created by the language instructor herself. It is designed to cater to a language learner's needs by presenting words and phrases for a chosen topic immediately. 
+This app is designed based upon my experience of teaching Mandarin language to American college students. The learning curriculum is created by myself. It is designed to cater to a language learner's immediate needs by presenting words and phrases right after a topic is chosen. 
 
 Currently only the first topic "greetings" is available for Mandarin and Japanese. Support for more topics and languages will be added in the future.
 
