@@ -17,7 +17,7 @@ Currently only the first topic "greetings" is available for Mandarin and Japanes
 - Users are able to learn a single topic in different languages, without switching to a different interface.
 - Unlogged users can learn how to say words and phrases in the first topic unit “greetings” in both Mandarin and Japanese.
 - Logged user can securely log in and log off, check learning progress, or start to learn a different foreign language  seamlessly.
-- Dark mode.
+- Able to switch between light and dark mode.
 
 ## Built with
  
