@@ -11,18 +11,18 @@
   "dependencies": {
     "bcrypt": "^3.0.6",
     "cors": "^2.8.5",
-    "express": "^4.16.4",
+    "express": "^4.17.1",
     "faker": "^4.1.0",
     "jsonwebtoken": "^8.5.1",
-    "nodemon": "^1.19.0",
-    "pg": "^7.11.0",
+    "nodemon": "^1.19.2",
+    "pg": "^7.12.1",
     "pryjs": "^1.0.3",
-    "readline-sync": "^1.4.9",
+    "readline-sync": "^1.4.10",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
-    "sequelize": "^5.8.6",
-    "socket.io": "^2.2.0",
-    "sqlite3": "^4.0.8",
+    "sequelize": "^5.19.1",
+    "socket.io": "^2.3.0",
+    "sqlite3": "^4.1.0",
     "xmlbuilder": "^13.0.2"
   }
 }

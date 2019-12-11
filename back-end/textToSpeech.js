@@ -1,4 +1,4 @@
-module.exports = function(text,language){
+module.exports = function (text, language) {
     console.log("Microsoft Text to Speech function here. get the audio")
     // Requires request and request-promise for HTTP requests
     // e.g. npm install request request-promise
@@ -76,7 +76,8 @@ module.exports = function(text,language){
         // You can replace this with a string containing your subscription key. If
         // you prefer not to read from an env variable.
         // e.g. const subscriptionKey = "your_key_here";
-        const subscriptionKey = "8fba1348eba54b8a8fe2f299c8cb4874";
+        //const subscriptionKey = "8fba1348eba54b8a8fe2f299c8cb4874"; //free trial
+        const subscriptionKey = "59b3efe3ac2844f5bdb3f030417f77ed"; //pay-as-you-go key
         if (!subscriptionKey) {
             throw new Error('Environment variable for your subscription key is not set.')
         };
@@ -89,5 +90,5 @@ module.exports = function(text,language){
             console.log(`Something went wrong: ${err}`);
         }
     }
-   main()
+    main()
 }
