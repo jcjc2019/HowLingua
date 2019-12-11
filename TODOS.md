@@ -16,5 +16,4 @@
    - loginForm state to MainContainer
    - signupForm state to MainContainer
 
-5. add a README.md
-6. Deploy
+5. Deploy

@@ -49,7 +49,7 @@ Currently only the first topic "greetings" is available for Mandarin and Japanes
 - Step 1: clone the repo to your local computer.
 - Step 2: in your terminal, navigate to back-end folder by entering `cd back-end`, then enter `npm install` to install necessary npm packages, then enter `node server` to start the back-end Express server.
 - Step 3: open a new terminal, navigate to front-end folder by entering `cd front-end`, then enter `npm install` to install necessary npm packages, then enter `npm start` to start the front-end React app.
-- Step 4: go to `http://localhost:3000/` to use the app.
+- Step 4: if everything works, then go to `http://localhost:3000/` to use the app.
 
 ## Live Demo
 
